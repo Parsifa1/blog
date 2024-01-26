@@ -10,7 +10,7 @@ const aboutProps = {
 <AboutLayout {...aboutProps}>
   <h3>云楼汐</h3>
 
-  <img src="/avatar.jpg" alt="avatar" style="float:right; margin: 5px;" width="180" />
+  <img src="/avatar.jpg" alt="avatar" width="180" />
 
   <h4>是在哈尔滨上学的<del>准</del>大二学生，热爱游戏，音乐...</h4>
 
@@ -25,3 +25,19 @@ const aboutProps = {
     <li>未完待续......</li>
   </ul>
 </AboutLayout>
+
+<style>
+  img {
+    width: 180px;
+    margin: 5px;
+    float: right; /* 默认右浮动，适用于大屏幕 */
+  }
+
+  @media only screen and (max-width: 600px) {
+    img {
+      float: none; /* 在小屏幕上取消浮动 */
+      display: block;
+      margin: 0 auto; /* 居中显示 */
+    }
+  }
+</style>
