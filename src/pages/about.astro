@@ -1,0 +1,27 @@
+---
+import AboutLayout from '../layouts/AboutLayout.astro'
+const aboutProps = {
+  frontmatter: {
+    title: `About`,
+  },
+}
+---
+
+<AboutLayout {...aboutProps}>
+  <h3>云楼汐</h3>
+
+  <img src="/avatar.jpg" alt="avatar" width="250" />
+
+  <h4>是在哈尔滨上学的<del>准</del>大二学生，热爱游戏，音乐...</h4>
+
+  <ul>
+    <li>
+      光电信息专业，对计算机很有兴趣，会在<a
+        href="https://t.me/aldric_li"
+        target="_blank">telegram</a
+      >上活跃！
+    </li>
+    <li>这是我是我第三次搭建博客，单纯是为了折腾一下Astro，这玩意很有趣。</li>
+    <li>未完待续......</li>
+  </ul>
+</AboutLayout>
