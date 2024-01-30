@@ -26,14 +26,310 @@ tags: ['computer']
 
 ![Neovim效果](../../assets/images/nvim_totual/nvim02.png) 
 
+## Table of contents
+
+
 # Neovim的简单配置
 
 > 当你考虑要试试 Neovim 的时候，可以再来看看这个部分。
 
+我的Neovim配置在[这里](https://github.com/Parsifa1/nvim), 配置的时候可以用作参考。
+
+## 关于Lua
+
 Neovim的原生语言支持是 lua，这门语言简单易学，你并不需要单独去学它，在学习配置的过程中，自然而然就会学会这门语言。
 
-我的Neovim配置在[这里](https://github.com/Parsifa1/nvim), 配置的时候可以用作参考。
+你可以简单参考这个[教程](https://learnxinyminutes.com/docs/lua/)，不过过于复杂的功能一开始是用不到的。
+
+lua的最基本的数据结构就是表 (Table), 类似键值对，我们的配置文件大部分的工作实际上也只是向插件的各种配置里去传入 Table 而已。
+
+## 配置的文件结构
+
+Nvim 的配置目录在 ~/.config/nvim 下。在 Linux/Mac 系统上，Nvim 会默认读取 ~/.config/nvim/init.lua 文件，理论上来说可以将所有配置的东西都放在这个文件里面，但这样不是一个好的做法，因此我划分不同的文件和目录来分管不同的配置。
+
+按照我的划分之后你的配置目录下的文件结构可能如下：
+
+```
+├── init.lua
+├── lua
+│   ├── custom.lua
+│   ├── keymap.lua
+│   ├── option.lua
+│   ├── plugin.lua
+│   ├── plugins
+│   │   ├── core 核心插件
+│   │   │   ├── Mason.lua
+│   │   │   ├── nvim-cmp.lua
+│   │   │   ├── nvim-lsp.lua
+│   │   │   └── ......
+│   │   ├── edit 优化编辑效率
+│   │   │   ├── flash.lua
+│   │   │   ├── ......
+│   │   ├── git git相关
+│   │   │   └── neogit.lua
+│   │   │   ├── ......
+│   │   ├── others 其他
+│   │   │   └── ......
+│   │   ├── theme 主题
+│   │   │   ├── catppuccin.lua
+│   │   │   ├── everforest.lua
+│   │   │   ├── nightfox.lua
+│   │   │   └── ......
+│   │   ├── tools 工具，也是大部分插件的位置
+│   │   │   ├── telescope.lua
+│   │   │   ├── ......
+│   │   └── ui 界面相关的插件
+│   │       ├── lualine.lua
+│   │       ├── mini-file.lua
+│   │       └── toggleterm.lua
+│   │       ├── ......
+│   ├── snippets luasnip所需要的自定义代码片段
+│   │   ├── cpp.lua
+│   │   └── rust.lua
+│   └── ......
+
+```
+
+## 写给曾经的 Vim用户
+
+如果你曾经使用过 Vim ，很多东西会比较熟悉，但是本篇文章追求 100% lua配置，尽量不使用VimScript，所以你们可以参照表格对应一下等价代码：
+
+| In Vim          | In Neovim               | Note                         |
+|-----------------|-------------------------|------------------------------|
+| let g:foo = bar | vim.g.foo = bar         |                              |
+| set foo = bar   | vim.opt.foo = bar       | set foo = vim.opt.foo = true |
+| some_vimscript  | vim.cmd(some_vimscript) |                              |
+
+在 Nvim 里面进行按键绑定的语法如下，具体的解释可以看 :h vim.keymap.set。
+
+```lua
+vim.keymap.set(<mode>, <key>, <action>, <opts>)
+```
+
+## 安装Neovim
+
+我用的是 Arch，用 pacman 安装 Nvim 非常容易，只要运行如下命令即可
+```shell
+sudo pacman -S neovim
+```
+如果你用的是其他系统或设备，可以去neovim官网寻找下载方法。
+在安装完成之后，如果 ~/.config/nvim 目录不存在，创建目录并新建 init.lua 文件
+
+```shell
+mkdir ~/.config/nvim
+mkdir ~/.config/nvim/lua
+touch ~/.config/nvim/init.lua
+```
+
+在 lua 文件夹下创建option.lua,主要存放大部分的设置。
+
+选项配置功能一览：
+
+- 默认采用系统剪贴板，同时支持鼠标操控 Nvim
+- Tab 和空格的换算
+- UI 界面
+- “智能”搜索
+
+```lua
+-- Hint: use `:h <option>` to figure out the meaning if needed
+vim.opt.clipboard = 'unnamedplus' -- use system clipboard
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.mouse = 'a' -- allow the mouse to be used in Nvim
+
+-- Tab
+vim.opt.tabstop = 4 -- number of visual spaces per TAB
+vim.opt.softtabstop = 4 -- number of spacesin tab when editing
+vim.opt.shiftwidth = 4 -- insert 4 spaces on a tab
+vim.opt.expandtab = true -- tabs are spaces, mainly because of python
+
+-- UI config
+vim.opt.number = true -- show absolute number
+vim.opt.relativenumber = true -- add numbers to each line on the left side
+vim.opt.cursorline = true -- highlight cursor line underneath the cursor horizontally
+vim.opt.splitbelow = true -- open new vertical split bottom
+vim.opt.splitright = true -- open new horizontal splits right
+-- vim.opt.termguicolors = true        -- enabl 24-bit RGB color in the TUI
+vim.opt.showmode = false -- we are experienced, wo don't need the "-- INSERT --" mode hint
+
+-- Searching
+vim.opt.incsearch = true -- search as characters are entered
+vim.opt.hlsearch = false -- do not highlight matches
+vim.opt.ignorecase = true -- ignore case in searches by default
+vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entered
+
+```
+然后打开 init.lua，用 require 导入刚才写的 options.lua 文件
+
+```lua
+require 'option'
+```
+
+## 简单按键配置
+
+按键功能一览：
+
+- 用 <z + h/j/k/l> 快速在多窗口之间移动光标
+- 用方向键进行窗口大小的调整
+- ……
+
+```lua
+-- 自定义set函数，方便使用
+set = function(mode, keys, func, ...)
+    local options = { noremap = true, silent = true }
+    local arg = { ... }
+    if #arg > 0 then
+        local desc = arg[1]
+        options.desc = desc
+    end
+    vim.keymap.set(mode, keys, func, options)
+end
+
+-- 窗口操作
+set("n", "<up>", ":res +5<CR>")
+set("n", "<down>", ":res -5<CR>")
+set("n", "<left>", ":vertical resize-5<CR>")
+set("n", "<right>", ":vertical resize+5<CR>")
+
+-- 搜索保持光标
+set("n", "n", "nzzzv")
+set("n", "N", "Nzzzv")
+
+-- 行移动
+set("v", "J", ":m '>+1<CR>gv=gv")
+set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- 窗口关闭
+set("n", "<A-q>", ":q<CR>")
+set("t", "<A-q>", "<C-\\><C-n>:q<CR>")
+set("i", "<A-q>", "<Esc>:q<CR>")
+
+-- insert模式下的方向键
+set("i", "<A-l>", "<Right>")
+set("i", "<A-h>", "<Left>")
+
+-- 分屏
+set("n", "z", "<C-w>")
+set("n", "zp", ":sp<CR>", "split")
+
+-- 折叠
+set("n", "za", "za")
+
+-- 其他
+set({ "n", "v" }, "H", "^")
+set({ "n", "v" }, "L", "$")
+
+```
 
 ## 选择插件管理器
 
+首选 [Lazy.nvim](https://github.com/folke/lazy.nvim)。
+
+这是由一位传奇的 neovim 插件开发者 [folke](https://github.com/folke) 开发的，他开发了无数精致且有用的插件，比如 [which-key](https://github.com/folke/which-key.nvim), [noice](https://github.com/folke/noice.nvim), 等等，你只需要知道，他的插件大部分都是精品，你可以有选择性的使用。   
+
+在 lua 文件夹下创建 plugin.lua, 并创建 plugins 文件夹。
+
+新建 ~/.config/nvim/lua/plugins.lua 文件并放入如下内容。下面的模板只完成了 Lazy.vim 自身的安装，还没有*指定其他第三方插件*。这个模板的功能主要是
+
+1. 初次启动的时候自动安装 `Lazy.nvim`
+1. 自动加载位于 plugins 文件夹里的分文件夹的插件内容
+1. 设置leader键为空格（在这里设置防止无法生效)
+
+```lua
+vim.g.mapleader = " "
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
+
+if vim.g.vscode then
+    require("lazy").setup({
+        spec = {
+            { import = "plugins.edit" },
+        },
+    })
+else
+    require("lazy").setup({
+        spec = {
+            -- 每当你在plugins目录下创建了一个文件夹，你就可以在这里加进去，文章之后会默认你创建了这些plugins下的子文件夹 
+            { import = "plugins.core" },
+            { import = "plugins.edit" },
+            { import = "plugins.git" },
+            { import = "plugins.others" },
+            { import = "plugins.theme" },
+            { import = "plugins.tools" },
+            { import = "plugins.ui" },
+        },
+        ui = {
+            border = "rounded",
+        },
+    })
+end
+```
+
+然后在 `init.lua` 文件里面再次加上一行导入这个文件
+
+```lua
+require 'plugin'
+```
+
+添加之后重启即可，`Lazy`会自动安装自己。
+
+## 主题配置
+
+我喜欢的主题是 nightfox 中的 Nordfox, 在 `plugins/theme/` 中创建 `nightfox.lua` ，
+
+在里面加上
+```lua
+return {
+    "EdenEast/nightfox.nvim",
+    config = function()
+        require("nightfox").setup()
+    end
+}
+
+```
+
+在 lua 文件夹下创建 custom.lua , 存放一些自定义函数，美化设定，以及常用的nerd font 图标。
+
+```lua
+-- in custom.lua
+local M = {}
+
+-- Border style of floating windows
+M.border = "rounded"
+
+M.theme = "nordfox"
+```
+
+然后在 `option.lua` 中加入
+```lua
+vim.cmd("colorscheme " .. require("custom").theme)
+```
+重启 nvim ，你会发现，主题已经生效了🥰
+
+## Tree-sitter 设置
+
+## LSP 设置
+
+## CMP 设置
+
+
+
+
+
+
 > 未完待续...
+
+# 参考文章
+
+[从零开始配置 Neovim](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch) 
+
+
