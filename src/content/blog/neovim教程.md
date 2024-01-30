@@ -95,11 +95,11 @@ Nvim 的配置目录在 ~/.config/nvim 下。在 Linux/Mac 系统上，Nvim 会�
 
 如果你曾经使用过 Vim ，很多东西会比较熟悉，但是本篇文章追求 100% lua配置，尽量不使用VimScript，所以你们可以参照表格对应一下等价代码：
 
-| In Vim          | In Neovim               | Note                         |
-|-----------------|-------------------------|------------------------------|
-| let g:foo = bar | vim.g.foo = bar         |                              |
-| set foo = bar   | vim.opt.foo = bar       | set foo = vim.opt.foo = true |
-| some_vimscript  | vim.cmd(some_vimscript) |                              |
+| In Vim          | In Neovim               |
+|-----------------|-------------------------|
+| let g:foo = bar | vim.g.foo = bar         |
+| set foo = bar   | vim.opt.foo = bar       |
+| some_vimscript  | vim.cmd(some_vimscript) |
 
 在 Nvim 里面进行按键绑定的语法如下，具体的解释可以看 :h vim.keymap.set。
 
