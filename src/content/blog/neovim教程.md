@@ -25,10 +25,9 @@ tags: ['computer']
 
 在这些的基础上，Neovim 拥有一个极其活跃和庞大社区，产出了数量丰富的优秀插件，其中很多都广受好评。不夸张的说，如今 Neovim 已经不亚于一个普通的IDE了。
 
-![Neovim效果](../../assets/images/nvim_totual/nvim02.png) 
+![Neovim效果](../../assets/images/nvim_totual/nvim02.png)
 
 ## Table of contents
-
 
 # Neovim的简单配置
 
@@ -96,7 +95,7 @@ Nvim 的配置目录在 ~/.config/nvim 下。在 Linux/Mac 系统上，Nvim 会�
 如果你曾经使用过 Vim ，很多东西会比较熟悉，但是本篇文章追求 100% lua配置，尽量不使用VimScript，所以你们可以参照表格对应一下等价代码：
 
 | In Vim          | In Neovim               |
-|-----------------|-------------------------|
+| --------------- | ----------------------- |
 | let g:foo = bar | vim.g.foo = bar         |
 | set foo = bar   | vim.opt.foo = bar       |
 | some_vimscript  | vim.cmd(some_vimscript) |
@@ -110,9 +109,11 @@ vim.keymap.set(<mode>, <key>, <action>, <opts>)
 ## 安装Neovim
 
 我用的是 Arch，用 pacman 安装 Nvim 非常容易，只要运行如下命令即可
+
 ```shell
 sudo pacman -S neovim
 ```
+
 如果你用的是其他系统或设备，可以去neovim官网寻找下载方法。
 在安装完成之后，如果 ~/.config/nvim 目录不存在，创建目录并新建 init.lua 文件
 
@@ -159,13 +160,16 @@ vim.opt.ignorecase = true -- ignore case in searches by default
 vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entered
 
 ```
-然后打开 init.lua，用 require 导入刚才写的 options.lua 文件
+
+然后打开 init.lua，用 require 导入刚才写的 option.lua 文件
 
 ```lua
 require 'option'
 ```
 
 ## 简单按键配置
+
+在 lua 文件夹下创建 keymap.lua,主要存放大部分的快捷键配置。
 
 按键功能一览：
 
@@ -225,11 +229,11 @@ set({ "n", "v" }, "L", "$")
 
 首选 [Lazy.nvim](https://github.com/folke/lazy.nvim)。
 
-这是由一位传奇的 neovim 插件开发者 [folke](https://github.com/folke) 开发的，他开发了无数精致且有用的插件，比如 [which-key](https://github.com/folke/which-key.nvim), [noice](https://github.com/folke/noice.nvim), 等等，你只需要知道，他的插件大部分都是精品，你可以有选择性的使用。   
+这是由一位传奇的 neovim 插件开发者 [folke](https://github.com/folke) 开发的，他开发了无数精致且有用的插件，比如 [which-key](https://github.com/folke/which-key.nvim), [noice](https://github.com/folke/noice.nvim), 等等，你只需要知道，他的插件大部分都是精品，你可以有选择性的使用。
 
 在 lua 文件夹下创建 plugin.lua, 并创建 plugins 文件夹。
 
-新建 ~/.config/nvim/lua/plugins.lua 文件并放入如下内容。下面的模板只完成了 Lazy.vim 自身的安装，还没有*指定其他第三方插件*。这个模板的功能主要是
+新建 ~/.config/nvim/lua/plugin.lua 文件并放入如下内容。下面的模板只完成了 Lazy.vim 自身的安装，还没有*指定其他第三方插件*。这个模板的功能主要是
 
 1. 初次启动的时候自动安装 `Lazy.nvim`
 1. 自动加载位于 plugins 文件夹里的分文件夹的插件内容
@@ -259,7 +263,7 @@ if vim.g.vscode then
 else
     require("lazy").setup({
         spec = {
-            -- 每当你在plugins目录下创建了一个文件夹，你就可以在这里加进去，文章之后会默认你创建了这些plugins下的子文件夹 
+            -- 每当你在plugins目录下创建了一个文件夹，你就可以在这里加进去，文章之后会默认你创建了这些plugins下的子文件夹
             { import = "plugins.core" },
             { import = "plugins.edit" },
             { import = "plugins.git" },
@@ -288,6 +292,7 @@ require 'plugin'
 我喜欢的主题是 nightfox 中的 Nordfox, 在 `plugins/theme/` 中创建 `nightfox.lua` ，
 
 在里面加上
+
 ```lua
 return {
     "EdenEast/nightfox.nvim",
@@ -311,9 +316,11 @@ M.theme = "nordfox"
 ```
 
 然后在 `option.lua` 中加入
+
 ```lua
 vim.cmd("colorscheme " .. require("custom").theme)
 ```
+
 重启 nvim ，你会发现，主题已经生效了🥰
 
 ## Tree-sitter 设置
@@ -322,15 +329,10 @@ vim.cmd("colorscheme " .. require("custom").theme)
 
 ## CMP 设置
 
-
-
-
-
-
 > 未完待续...
 
 # 参考文章
 
-[从零开始配置 Neovim](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch) 
+[从零开始配置 Neovim](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch)
 
-
+[neovim 和 vim 的前世今生](https://jdhao.github.io/2020/01/12/vim_nvim_history_development/) 
