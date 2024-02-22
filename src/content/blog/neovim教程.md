@@ -1,10 +1,10 @@
 ---
 title: 'Neovim浅谈与安利'
 pubDatetime: 2023-12-21T08:00:00Z
-modDatetime: 2024-01-31T00:20:00Z
+modDatetime: 2024-02-23T01:53:00X
 description: '你应该使用这个世界上最快的编辑器（确信'
 author: 'Parsifal'
-tags: ['computer']
+tags: ['computer', 'neovim']
 ---
 
 # Neovim的前世今生
@@ -325,6 +325,34 @@ vim.cmd("colorscheme " .. require("custom").theme)
 
 ## Tree-sitter 设置
 
+Tree-sitter 是一个非常快的语法解析库，能够提供轻量，快速的基于语义的代码高亮。配置Tree-sitter:
++ 在 `core` 文件夹中创建 `tree-sitter.lua` 文件，加入如下内容：
+
+```lua
+return {
+    "nvim-treesitter/nvim-treesitter",
+    event = "BufReadPre",
+    build = ":TSUpdate",
+    config = function()
+        require("nvim-treesitter.configs").setup {
+            ensure_installed = {
+                "lua",
+                "markdown",
+                "vim",
+                -- 加入你需要的语言
+            },
+            sync_install = true,
+            auto_install = true,
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+            },
+        }
+    end,
+}
+```
+重启 nvim ，运行 `:TSUpdate`, 等待 treesitter 的 parser 安装完成，很快代码高亮将会自动应用.
+
 ## LSP 设置
 
 ## CMP 设置
@@ -335,4 +363,4 @@ vim.cmd("colorscheme " .. require("custom").theme)
 
 [从零开始配置 Neovim](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch)
 
-[neovim 和 vim 的前世今生](https://jdhao.github.io/2020/01/12/vim_nvim_history_development/) 
+[neovim 和 vim 的前世今生](https://jdhao.github.io/2020/01/12/vim_nvim_history_development/)
