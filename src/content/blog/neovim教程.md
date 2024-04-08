@@ -11,7 +11,7 @@ tags: ['computer', 'neovim']
 
 ![head](../../assets/images/nvim_totual/nvim01.jpg)
 
-想要谈谈 Neovm，那就不得不谈谈它的发源---大名鼎鼎的Vim编辑器。
+想要谈谈 Neovim，那就不得不谈谈它的发源---大名鼎鼎的Vim编辑器。
 
 > Vim 于 1991 年由 Bram 发布，最初 Vim 模仿了 Vi 编辑器的特性，后面加以扩展，逐步添加了很多新功能。今年距离 Vim 首次发布已经快 30 年了，Vim 这个强大的编辑器仍然在不断更新，并且被许多人所使用和讨论，这也从侧面说明了 Vim 的魅力 (Vim 被网友们尊称为「编辑器之神」)。刚开始，Vim 完全由 Bram 独立开发维护，后来不断有开发者加入 Vim 的开发，并把 Vim 移植到了不同的系统平台上。有一段时间，Bram 甚至辞去了工作，全力投入到 Vim 的开发，靠着网友的捐助维持基本生活。
 
@@ -326,7 +326,8 @@ vim.cmd("colorscheme " .. require("custom").theme)
 ## Tree-sitter 设置
 
 Tree-sitter 是一个非常快的语法解析库，能够提供轻量，快速的基于语义的代码高亮。配置Tree-sitter:
-+ 在 `core` 文件夹中创建 `tree-sitter.lua` 文件，加入如下内容：
+
+- 在 `core` 文件夹中创建 `tree-sitter.lua` 文件，加入如下内容：
 
 ```lua
 return {
@@ -351,6 +352,7 @@ return {
     end,
 }
 ```
+
 重启 nvim ，等待 treesitter 的 parser 安装完成，很快代码高亮将会自动应用.
 
 ## LSP 设置
