@@ -4,7 +4,7 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search";
+  activeNav?: "posts" | "tags" | "about" | "search" | "friends";
 }
 
 const { activeNav } = Astro.props;
@@ -71,6 +71,11 @@ const { activeNav } = Astro.props;
             </a>
           </li>
           <li>
+            <a href="/friends/" class={activeNav === "friends" ? "active" : ""}>
+              Friends
+            </a>
+          </li>
+          <li>
             <LinkButton
               href="/search/"
               className={`focus-outline p-3 sm:p-1 ${
@@ -117,6 +122,9 @@ const { activeNav } = Astro.props;
 </header>
 
 <style>
+  svg {
+    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+  }
   #skip-to-content {
     @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
   }
@@ -156,7 +164,7 @@ const { activeNav } = Astro.props;
     @apply col-span-1;
   }
   nav a.active {
-    @apply underline decoration-wavy decoration-2 underline-offset-4;
+    @apply underline decoration-wavy decoration-2 underline-offset-8;
   }
   nav a.active svg {
     @apply fill-skin-accent;

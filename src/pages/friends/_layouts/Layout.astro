@@ -1,0 +1,48 @@
+---
+export interface Props {
+  title: string;
+}
+
+import MainLayout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+
+const { title } = Astro.props;
+---
+
+<MainLayout title={title}>
+  <Header activeNav="friends" />
+  <slot />
+  <Footer />
+</MainLayout>
+
+<style>
+  * {
+    margin: auto;
+  }
+</style>
+
+<style is:global>
+  :root {
+    --accent: 124, 58, 237;
+  }
+  html {
+    font-family: system-ui, sans-serif;
+    background-color: #f6f6f6;
+  }
+  code {
+    font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono",
+      "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Fira Code", "FiraCode",
+      "FiraCode NF", "Noto Sans Mono", "Noto Sans Mono CJK SC",
+      "Noto Sans Mono CJK JP", "Noto Sans Mono CJK KR", "Noto Sans Mono CJK TC",
+      "Courier New", monospace;
+  }
+  .main {
+    padding: 0.5rem;
+  }
+  @media (min-width: 800px) {
+    div.main {
+      margin: 0 50%;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+import Layout from "./_layouts/Layout.astro";
+import Card from "./_components/Card.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+---
+
+<Layout title={`Friends | ${SITE.title}`}>
+  <Main pageTitle="友链" pageDesc="我的朋友们.">
+    <ul role="list" class="link-card-grid">
+      <Card
+        link="https://imoe.moe"
+        title="艾萌"
+        avatar="//cdn.jsdelivr.net/gh/cutemoe/moepic/avatar/imoe.PNG"
+        desc="艾萌的小世界"
+      />
+      <style is:inline>
+        .link-card#sakura code {
+          background-color: #d6ecf0;
+        }
+      </style>
+    </ul>
+  </Main>
+</Layout>
+
+<style is:global>
+  li {
+    list-style: none;
+  }
+</style>
+<style>
+  img {
+    max-width: 100%; /* fix overflow (when screen is narrow on mobile) */
+  }
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+  .info {
+    line-height: 1.6;
+    margin: 1rem 0;
+    border: 1px solid rgba(var(--accent), 25%);
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.4rem;
+  }
+  .info strong {
+    color: var(--accent);
+  }
+  .link-card-grid {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(35ch, 1fr));
+    gap: 1rem;
+    padding: 0;
+    /* margin: 0 1em; */
+  }
+</style>

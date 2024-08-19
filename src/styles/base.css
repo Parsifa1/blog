@@ -7,19 +7,23 @@
   html[data-theme="light"] {
     --color-fill: 250, 252, 252;
     --color-text-base: 34, 46, 54;
+    --color-text-url: 68, 68, 68;
     --color-accent: 211, 0, 106;
     --color-card: 234, 206, 219;
     --color-card-muted: 241, 186, 212;
     --color-border: 227, 169, 198;
+    --color-quote: 250, 248, 248;
   }
 
   html[data-theme="dark"] {
     --color-fill: 33, 39, 55;
     --color-text-base: 234, 237, 243;
+    --color-text-url: 256, 244, 233;
     --color-accent: 207, 130, 158;
     --color-card: 52, 63, 96;
     --color-card-muted: 207, 145, 176;
     --color-border: 245, 176, 195;
+    --color-quote: 33, 43, 59;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -35,14 +39,14 @@
   }
   section,
   footer {
-    @apply mx-auto max-w-3xl px-4;
+    @apply mx-auto max-w-3xl px-4 font-sans;
   }
   a {
     @apply outline-2 outline-offset-1 outline-skin-fill 
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+    /* @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent; */
   }
   svg.icon-tabler {
     @apply inline-block h-6 w-6 scale-125 fill-transparent 

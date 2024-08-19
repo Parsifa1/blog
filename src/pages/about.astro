@@ -1,16 +1,23 @@
 ---
-import AboutLayout from '../layouts/AboutLayout.astro'
+import AboutLayout from "../layouts/AboutLayout.astro";
+import { Image } from "astro:assets";
 const aboutProps = {
   frontmatter: {
     title: `About`,
   },
-}
+};
 ---
 
 <AboutLayout {...aboutProps}>
   <h3>云楼汐</h3>
 
-  <img src="/avatar.jpg" alt="avatar" width="180" />
+  <Image
+    src="/avatar.jpg"
+    alt="avatar"
+    width={180}
+    height={180}
+    loading={"eager"}
+  />
 
   <h4>大学二年级，热爱游戏，音乐...</h4>
 
@@ -33,7 +40,7 @@ const aboutProps = {
     float: right; /* 默认右浮动，适用于大屏幕 */
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 750px) {
     img {
       float: none; /* 在小屏幕上取消浮动 */
       display: block;

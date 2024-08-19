@@ -54,7 +54,15 @@ module.exports = {
         transparent: "transparent",
       },
       fontFamily: {
+        sans:[ "Noto Sans", "PingFang SC", "Noto Sans CJK SC",
+        "Noto Sans CJK TC", "Noto Sans CJK JP", "Calibri", "Segoe UI Symbol",
+        "Segoe UI Emoji", ".LucidaGrandeUI-Bold", "Lucida Grande", "Segoe UI",
+        "Arial", "sans"],
         mono: ["IBM Plex Mono", "monospace"],
+        serif:[ "Noto Sans serif", "PingFang SC", "Noto Sans CJK SC",
+        "Noto Sans CJK TC", "Noto Sans CJK JP", "Calibri", "Segoe UI Symbol",
+        "Segoe UI Emoji", ".LucidaGrandeUI-Bold", "Lucida Grande", "Segoe UI",
+        "Arial", "sans-serif"],
       },
 
       typography: {

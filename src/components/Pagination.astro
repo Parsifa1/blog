@@ -45,6 +45,9 @@ const next = currentPage < totalPages ? "" : "disabled";
 }
 
 <style>
+  svg {
+    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+  }
   .pagination-wrapper {
     @apply mb-8 mt-auto flex justify-center;
   }

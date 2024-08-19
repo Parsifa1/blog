@@ -1,22 +1,23 @@
 ---
-import { getCollection } from 'astro:content'
-import Layout from '@layouts/Layout.astro'
-import Header from '@components/Header.astro'
-import Footer from '@components/Footer.astro'
-import LinkButton from '@components/LinkButton.astro'
-import Hr from '@components/Hr.astro'
-import Card from '@components/Card'
-import Socials from '@components/Socials.astro'
-import getSortedPosts from '@utils/getSortedPosts'
-import { SOCIALS } from '@config'
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import LinkButton from "@components/LinkButton.astro";
+import Hr from "@components/Hr.astro";
+import Card from "@components/Card";
+import Socials from "@components/Socials.astro";
+import { Image } from "astro:assets";
+import getSortedPosts from "@utils/getSortedPosts";
+import { SOCIALS } from "@config";
 
-const posts = await getCollection('blog')
+const posts = await getCollection("blog");
 
-const sortedPosts = getSortedPosts(posts)
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured)
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured)
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
-const socialCount = SOCIALS.filter((social) => social.active).length
+const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
 <Layout>
@@ -43,7 +44,13 @@ const socialCount = SOCIALS.filter((social) => social.active).length
       <p>"Hinc itur ad astra"</p>
       <p>"我们自此通往繁星"</p>
       <p>Algorithm, Computer and Math</p>
-      <img src="/front.svg" alt="frontpic" width="300" />
+      <Image
+        src="/front.svg"
+        alt="frontpic"
+        width={300}
+        height={300}
+        loading={"eager"}
+      />
       {
         // only display if at least one social link is enabled
         socialCount > 0 && (
@@ -128,6 +135,9 @@ const socialCount = SOCIALS.filter((social) => social.active).length
   }
   #hero p {
     @apply my-2;
+  }
+  svg {
+    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   .social-wrapper {
     @apply mt-4 flex flex-col sm:flex-row sm:items-center;

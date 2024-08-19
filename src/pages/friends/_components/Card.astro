@@ -1,0 +1,181 @@
+---
+export interface Props {
+  id?: string;
+  title: string;
+  link: string;
+  avatar: string;
+  /** 网站自己的描述 */
+  desc?: string;
+  /** 网站的基本功能需要 JavaScript 才能正常工作 */
+  script?: boolean;
+}
+
+const { id, link, title, avatar, desc, script } = Astro.props;
+const href = "https://" + link;
+import { Icon } from "astro-icon/components";
+---
+
+<li class="link-card" id={id}>
+  <a href={href}>
+    <div class="grid-container">
+      <div class="title"><h2>{title}</h2></div>
+      <img class="avatar" loading="lazy" src={avatar} />
+      <div class="link">
+        <p id="link">
+          <code>{link}</code>
+          {
+            script && (
+              <span class="require-js">
+                <Icon name="ic:round-javascript" />
+              </span>
+            )
+          }
+        </p>
+      </div>
+      <div class="main">
+        {
+          desc ? (
+            <>
+              <blockquote class="quote" set:html={desc} />
+              <div class="comment-both">
+                <slot />
+              </div>
+            </>
+          ) : (
+            <div class="comment">
+              <slot />
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </a>
+</li>
+<style>
+  .require-js > svg {
+    opacity: 0;
+  }
+  .link-card:hover .require-js > svg {
+    transform: scale(2) translateY(5%);
+    opacity: 0.6;
+    transition: opacity 0.6s;
+  }
+  .link-card {
+    text-align: left;
+    display: flex;
+    padding: 2.5px;
+    background-image: linear-gradient(
+      45deg,
+      rgb(var(--color-border)),
+      #da62a4 30%,
+      rgb(var(--color-fill)) 60%
+    );
+    background-size: 400%;
+    border-radius: 0.5rem;
+    /* background-color: rgb(var(--color-card)); */
+    background-position: 100%;
+    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow:
+      0 4px 6px 0px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  .link-card > a {
+    width: 100%;
+    text-decoration: none;
+    /* line-height: 1.4; */
+    padding: 1rem 1.3rem;
+    border-radius: 0.35rem;
+    color: rgb(var(--color-text-base));
+    background-color: rgb(var(--color-fill));
+    opacity: 0.8;
+  }
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: rgb(var(--color-text-base));
+    text-align: left;
+    transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  p {
+    margin-block-start: 0.5rem;
+    margin-block-end: 0;
+    /* color: #444; */
+    color: rgb(var(--color-text-url));
+  }
+  .link-card:is(:hover, :focus-within) {
+    background-position: 0;
+  }
+  .link-card:is(:hover, :focus-within) h2 {
+    color: var(--accent);
+  }
+  img.avatar {
+    height: 54px;
+    width: 54px;
+    border-radius: 50%;
+    border: solid #44444466 1px;
+  }
+  .title {
+    grid-area: title;
+  }
+
+  .avatar {
+    grid-area: avatar;
+  }
+
+  .quote {
+    text-align: left;
+    margin: 0rem;
+    color: rgb(var(--color-text-base));
+    background: rgb(var(--color-quote));
+    border-left: 8px solid #ccc;
+    padding: 0.2em 6px;
+  }
+
+  div.comment-both {
+    margin-block-start: 4px;
+  }
+
+  div.comment {
+    margin-block-start: 16px;
+  }
+
+  div.main {
+    grid-area: main;
+    line-height: 1.8em;
+    margin: 0.5em 6px;
+  }
+
+  .link {
+    grid-area: link;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-areas:
+      "title title title . avatar"
+      "link  link  link  .  avatar"
+      "main main main main main"
+      "main main main main main"
+      "main main main main main";
+    gap: 0.35rem;
+    padding: 0.1rem;
+    justify-content: space-between;
+  }
+
+  code {
+    font-size: 0.875em;
+    font-weight: bold;
+    background: rgba(var(--accent), 12%);
+    color: rgb(var(--accent));
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 0.3em 0.45em;
+  }
+</style>
+
+<style is:raw>
+  a {
+    border-bottom: none !important;
+  }
+</style>
