@@ -5,8 +5,8 @@
 !/src
 !/public
 !/.github
-!tsconfig.json
 !astro.config.ts
+!tailwind.config.js
 !package.json
 !.prettierrc
 !.eslintrc.js

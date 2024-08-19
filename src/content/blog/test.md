@@ -1,9 +1,8 @@
 ---
-title: 'Website Testing'
+title: "Website Testing"
 pubDatetime: 2023-12-21T08:10:00Z
-description: '从hexo迁移到Astro框架'
-author: 'Parsifal'
-
+description: "从hexo迁移到Astro框架"
+author: "Parsifal"
 ---
 
 # 测试
@@ -11,6 +10,7 @@ author: 'Parsifal'
 ![图片演示](https://i1.woh.to/2023/12/12/awaeb3b1d8b6b25b0dc.webp)
 
 我的GPG密钥：
+
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 mDMEZeDUIxYJKwYBBAHaRw8BAQdAf5E00kWL2/A8E7fAnpsnQoOXYBWknrfKWj0D
