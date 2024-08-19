@@ -46,6 +46,7 @@
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
+    @apply font-serif
     /* @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent; */
   }
   svg.icon-tabler {
