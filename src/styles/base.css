@@ -123,6 +123,7 @@
 
   code,
   blockquote {
+    @apply font-code !important;
     word-wrap: break-word;
   }
 

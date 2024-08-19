@@ -77,6 +77,7 @@ export const theme = {
         "Arial",
         "sans-serif",
       ],
+      code: ["JetBrains Mono", "monosapce"],
     },
 
     typography: {
