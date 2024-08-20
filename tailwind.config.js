@@ -77,7 +77,7 @@ export const theme = {
         "Arial",
         "sans-serif",
       ],
-      code: ["JetBrains Mono", "monosapce"],
+      code: ["Iosevka Cloudtide", "JetBrains Mono", "Consolas", "monosapce"],
     },
 
     typography: {
