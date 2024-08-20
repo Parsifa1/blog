@@ -34,7 +34,7 @@
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base 
+    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans font-normal text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
   }
   section,
@@ -123,7 +123,7 @@
 
   code,
   blockquote {
-    @apply font-code !important;
+    @apply font-code text-base !important;
     word-wrap: break-word;
   }
 

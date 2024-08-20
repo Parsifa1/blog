@@ -59,7 +59,6 @@ export const theme = {
       sans: [
         "IBM Plex Mono",
         "Noto Sans SC",
-        "Noto Sans CJK SC",
         "Open Sans",
         "Helvetica",
         "Neue",
@@ -70,7 +69,6 @@ export const theme = {
       serif: [
         "IBM Plex Mono",
         "Noto Serif SC",
-        "Noto Serif CJK SC",
         "Helvetica",
         "Neue",
         "Helvetica",
