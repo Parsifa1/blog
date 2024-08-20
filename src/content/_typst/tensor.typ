@@ -11,7 +11,7 @@
 ]
 #show heading.where(level: 1): it => box(width: 100%)[
 ]
-#set text(lang: "zh", cjk-latin-spacing: auto, font: "Noto Serif SC")
+#set text(lang: "zh", cjk-latin-spacing: auto, font: "Noto Serif CJK SC")
 #set page(width: 38em, margin: (top: -2em, rest: 0em))
 // #set page(
 //   paper: "a4",
