@@ -1,7 +1,7 @@
 #show heading: it => box(width: 100%)[
   #set text(
-    font: "FZXiaoBiaoSong-B05",
-    size: 12pt,
+    font: "Noto Serif CJK SC",
+    size: 14pt,
   )
   #if it.level != 1 {
     counter(heading).display()
@@ -9,16 +9,11 @@
   #h(0.35em)
   #it.body
 ]
-#show heading.where(level: 1): it => box(width: 100%)[
-]
-#set text(lang: "zh", cjk-latin-spacing: auto, font: "Noto Serif CJK SC")
-#set page(width: 38em, margin: (top: -2em, rest: 0em))
-// #set page(
-//   paper: "a4",
-//   numbering: "1",
-//   margin: (x: 1cm, y: 1.5cm),
-//   number-align: center,
-// )
+#show heading.where(level: 1): it => box(width: 100%)[]
+
+#set text(font: "Noto Serif CJK SC", size: 13pt, lang: "zh", region: "cn")
+
+#set page(width: 34em, margin: (top: -2em, rest: 0em))
 #set par(first-line-indent: 2em)
 #set heading(numbering: "1.1")
 
@@ -66,3 +61,4 @@ $ dif bold(r) = (diff bold(r)) / (diff x^i) bold(g)^i $
 
 从而说明，在曲线坐标系中，$(diff bold(r)) / (diff x^i)$ 是协变基矢量, $dif x^i$ 是逆变基矢量，两者互为对偶矢量。
 
+现在可以使用*粗体*了
