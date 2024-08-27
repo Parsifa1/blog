@@ -25,6 +25,9 @@ export const theme = {
         accent: withOpacity("--color-accent"),
         inverted: withOpacity("--color-fill"),
       },
+      gray: {
+        base: withOpacity("--color-gray"),
+      },
     },
     backgroundColor: {
       skin: {

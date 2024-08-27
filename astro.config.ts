@@ -21,7 +21,9 @@ export default defineConfig({
     sitemap(),
     typst(),
     mdx(),
-    icon(),
+    icon({
+      iconDir: "src/assets/icons",
+    }),
   ],
   markdown: {
     remarkPlugins: [

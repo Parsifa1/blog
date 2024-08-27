@@ -26,12 +26,28 @@ const { noMarginTop = false } = Astro.props;
       >
     </div>
 
+    <div class="text-gray-base">
+      <span class="icon">
+        <Icon name="noscript" />
+      </span>
+      This page has no JavaScript.
+    </div>
+
     <div>
-      <span>Copyright by Parsifa1 &#169; {currentYear}</span>
+      <span
+        >Copyright by <a href="https://github.com/parsifa1"> Parsifa1</a> &#169;
+        {currentYear}</span
+      >
     </div>
   </div>
 
   <style>
+    div {
+      @apply font-code text-gray-base;
+    }
+    a {
+      @apply text-skin-base;
+    }
     svg {
       @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
     }

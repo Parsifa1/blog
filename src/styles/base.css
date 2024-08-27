@@ -13,6 +13,7 @@
     --color-card-muted: 241, 186, 212;
     --color-border: 227, 169, 198;
     --color-quote: 250, 248, 248;
+    --color-gray: 55, 65, 81;
   }
 
   html[data-theme="dark"] {
@@ -24,6 +25,7 @@
     --color-card-muted: 207, 145, 176;
     --color-border: 245, 176, 195;
     --color-quote: 33, 43, 59;
+    --color-gray: 156, 163, 175;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
