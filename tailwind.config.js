@@ -59,11 +59,8 @@ export const theme = {
       sans: [
         "IBM Plex Mono",
         "Noto Sans SC",
-        "Open Sans",
-        "Helvetica",
-        "Neue",
-        "Helvetica",
-        "Arial",
+        "PingFang SC",
+        "Microsoft Yahei",
         "sans",
       ],
       serif: [
