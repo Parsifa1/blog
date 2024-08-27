@@ -13,7 +13,7 @@
 
 #set text(font: "Noto Serif CJK SC", size: 13pt, lang: "zh", region: "cn")
 
-#set page(width: 28em, margin: (top: -2em, rest: 0em))
+#set page(width: 34em, margin: (top: -2em, rest: 0em))
 #set par(first-line-indent: 2em)
 #set heading(numbering: "1.1")
 
@@ -60,4 +60,3 @@ $ dif bold(r) = bold(g)_i dif x^i $
 $ dif bold(r) = (diff bold(r)) / (diff x^i) bold(g)^i $
 
 从而说明，在曲线坐标系中，$(diff bold(r)) / (diff x^i)$ 是协变基矢量, $dif x^i$ 是逆变基矢量，两者互为对偶矢量。
-
