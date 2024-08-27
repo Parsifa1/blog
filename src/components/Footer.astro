@@ -18,18 +18,6 @@ const { noMarginTop = false } = Astro.props;
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
   <Hr noPadding />
   <div class="footer-wrapper">
-    <!-- <div> -->
-    <!--   <a href="https://512kb.club" -->
-    <!--     ><Image -->
-    <!--       width="234.376" -->
-    <!--       height="30.002" -->
-    <!--       src="https://512kb.club/assets/images/blue-team.svg" -->
-    <!--       loading={"eager"} -->
-    <!--       alt="512kb" -->
-    <!--     /></a -->
-    <!--   > -->
-    <!-- </div> -->
-
     <div data-build={Date.now()}>
       Built with <a href="https://astro.build/"
         ><span class="icon"><Icon name="simple-icons:astro" /></span>{
@@ -63,7 +51,7 @@ const { noMarginTop = false } = Astro.props;
       @apply scale-125;
     }
     .icon svg {
-      @apply scale-75;
+      @apply inline-block scale-75;
     }
     .separator {
       @apply hidden sm:inline;
