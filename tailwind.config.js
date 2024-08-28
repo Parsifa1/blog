@@ -19,6 +19,9 @@ export const theme = {
   },
 
   extend: {
+    fontSize: {
+      ft: "0.9rem",
+    },
     textColor: {
       skin: {
         base: withOpacity("--color-text-base"),
