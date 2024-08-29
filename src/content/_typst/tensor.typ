@@ -13,7 +13,11 @@
 
 #set text(font: "Noto Serif CJK SC", size: 13pt, lang: "zh", region: "cn")
 
-#set page(width: 34em, height: auto, margin: (top: -2em, rest: 0em))
+#set page(
+  width: 34em,
+  height: auto,
+  margin: (top: -2em, bottom: 1em, rest: 0em),
+)
 #set par(first-line-indent: 2em)
 #set heading(numbering: "1.1")
 
