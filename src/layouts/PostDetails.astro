@@ -56,7 +56,9 @@ const layoutProps = {
       class="focus-outline mb-2 mt-8 flex hover:opacity-75"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="go-back"
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent"
         ><path
           d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
         ></path>
@@ -84,7 +86,10 @@ const layoutProps = {
         id="back-to-top"
         class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="rotate-90 inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent"
+        >
           <path
             d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
           ></path>
@@ -102,21 +107,12 @@ const layoutProps = {
   main {
     @apply mx-auto w-full max-w-4xl px-4 pb-12;
   }
-  svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
-  }
-  .rotate-90 {
-    @apply fill-skin-base;
-  }
-  .go-back {
-    @apply fill-skin-base;
-  }
   .post-title {
     @apply text-2xl font-semibold text-skin-accent;
   }
 </style>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
