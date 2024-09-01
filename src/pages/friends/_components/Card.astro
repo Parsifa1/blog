@@ -19,7 +19,7 @@ import { Icon } from "astro-icon/components";
   <a href={href}>
     <div class="grid-container">
       <div class="title"><h2>{title}</h2></div>
-      <img class="avatar" loading="lazy" src={avatar} />
+      <img alt="avatar" class="avatar" loading="lazy" src={avatar} />
       <div class="link">
         <p id="link">
           <code>{link}</code>
@@ -63,20 +63,15 @@ import { Icon } from "astro-icon/components";
   .link-card {
     text-align: left;
     display: flex;
-    padding: 2.5px;
-    background-image: linear-gradient(
-      45deg,
-      rgb(var(--color-border)),
-      #da62a4 30%,
-      rgb(var(--color-fill)) 40%
-    );
+    padding: 3px;
+    background-image: var(--accent-gradient);
     background-size: 400%;
     border-radius: 0.5rem;
     /* background-color: rgb(var(--color-card)); */
     background-position: 99%;
     transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     box-shadow:
-      0 4px 6px 0px rgba(0, 0, 0, 0.1),
+      0 4px 6px 0 rgba(0, 0, 0, 0.1),
       0 2px 4px -2px rgba(0, 0, 0, 0.1);
   }
 
@@ -125,7 +120,7 @@ import { Icon } from "astro-icon/components";
 
   .quote {
     text-align: left;
-    margin: 0rem;
+    margin: 0;
     color: rgb(var(--color-text-base));
     background: rgb(var(--color-quote));
     border-left: 8px solid #ccc;
@@ -168,7 +163,6 @@ import { Icon } from "astro-icon/components";
     font-weight: bold;
     background: rgba(var(--accent), 12%);
     color: rgb(var(--accent));
-    color: var(--accent);
     border-radius: 4px;
     padding: 0.3em 0.45em;
   }
