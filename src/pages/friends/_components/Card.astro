@@ -11,11 +11,12 @@ export interface Props {
 }
 
 const { id, link, title, avatar, desc, script } = Astro.props;
+const href = "https://" + link;
 import { Icon } from "astro-icon/components";
 ---
 
 <li class="link-card" id={id}>
-  <a href={link}>
+  <a href={href}>
     <div class="grid-container">
       <div class="title"><h2>{title}</h2></div>
       <img class="avatar" loading="lazy" src={avatar} />
@@ -67,12 +68,12 @@ import { Icon } from "astro-icon/components";
       45deg,
       rgb(var(--color-border)),
       #da62a4 30%,
-      rgb(var(--color-fill)) 60%
+      rgb(var(--color-fill)) 40%
     );
     background-size: 400%;
     border-radius: 0.5rem;
     /* background-color: rgb(var(--color-card)); */
-    background-position: 100%;
+    background-position: 99%;
     transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     box-shadow:
       0 4px 6px 0px rgba(0, 0, 0, 0.1),
