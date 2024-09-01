@@ -11,12 +11,11 @@ export interface Props {
 }
 
 const { id, link, title, avatar, desc, script } = Astro.props;
-const href = "https://" + link;
 import { Icon } from "astro-icon/components";
 ---
 
 <li class="link-card" id={id}>
-  <a href={href}>
+  <a href={link}>
     <div class="grid-container">
       <div class="title"><h2>{title}</h2></div>
       <img class="avatar" loading="lazy" src={avatar} />
