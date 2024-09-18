@@ -31,3 +31,6 @@ pnpm-debug.log*
 !.yarn/versions
 .pnp.*
 .idea/
+
+#obsidian
+.obsidian/
