@@ -8,7 +8,7 @@ export const SITE: Site = {
   ogImage:
     "https://i2.woh.to/2023/09/30/photo_2023-05-07_23-49-04a122368bf889ed18.jpg",
   lightAndDarkMode: true,
-  postPerPage: 5,
+  postPerPage: 4,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };
 
