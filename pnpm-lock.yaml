@@ -23,9 +23,6 @@ importers:
       '@astrojs/tailwind':
         specifier: ^5.1.0
         version: 5.1.0(astro@4.13.3(@types/node@20.11.7)(less@4.2.0)(lightningcss@1.23.0)(terser@5.27.0)(typescript@5.3.3))(tailwindcss@3.4.1)
-      '@fontsource/noto-serif-sc':
-        specifier: ^5.0.14
-        version: 5.0.14
       '@iconify-json/ic':
         specifier: ^1.1.18
         version: 1.1.18
@@ -535,9 +532,6 @@ packages:
   '@eslint/js@8.56.0':
     resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  '@fontsource/noto-serif-sc@5.0.14':
-    resolution: {integrity: sha512-C8BiZlYjiQJbU4VNv1I7irT3x+W1SpajUOxfckVnBpRAN2uvi+U2FxZzvyWNrjN83+1IR5/opT2gllgbTGUqHA==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -4550,8 +4544,6 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.56.0': {}
-
-  '@fontsource/noto-serif-sc@5.0.14': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:

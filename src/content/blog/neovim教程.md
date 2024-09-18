@@ -28,7 +28,7 @@ tags: ["computer", "neovim"]
 
 # Neovim 的前世今生
 
-![head](../../assets/images/nvim_totual/nvim01.jpg)
+![head](./assets/images/nvim_totual/nvim01.jpg)
 
 想要谈谈 Neovim，那就不得不谈谈它的发源---大名鼎鼎的 Vim 编辑器。
 
@@ -44,7 +44,7 @@ tags: ["computer", "neovim"]
 
 在这些的基础上，Neovim 拥有一个极其活跃和庞大社区，产出了数量丰富的优秀插件，其中很多都广受好评。不夸张的说，如今 Neovim 已经不亚于一个普通的IDE了。
 
-![Neovim效果](../../assets/images/nvim_totual/nvim02.png)
+![Neovim效果](./assets/images/nvim_totual/nvim02.png)
 
 # Neovim的简单配置
 
