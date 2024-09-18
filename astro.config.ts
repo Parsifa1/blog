@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
-import * as remarkToc from "remark-toc";
+import remarkToc from "remark-toc";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 // import remarkCollapse from "remark-collapse";
@@ -10,7 +10,6 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import icon from "astro-icon";
-
 export default defineConfig({
   site: SITE.website,
   integrations: [
@@ -26,11 +25,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkMath,
-      [remarkToc as unknown as string, { heading: "目录" }],
-    ],
-
+    remarkPlugins: [remarkMath, [remarkToc as any, { heading: "目录" }]],
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
       theme: "one-dark-pro",
