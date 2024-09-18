@@ -1,30 +1,15 @@
 ---
-title: "Neovim浅谈与安利"
+title: Neovim浅谈与安利
 pubDatetime: 2023-12-21T08:00:00Z
-modDatetime: 2024-03-02T01:01:00Z
-description: "你应该使用这个世界上最快的编辑器（确信"
-author: "Parsifal"
-tags: ["computer", "neovim"]
+modDatetime: 2024-09-19T03:41:30Z
+description: 你应该使用这个世界上最快的编辑器（确信
+author: Parsifal
+tags:
+  - computer
+  - neovim
 ---
 
-<details open>
-<summary><span style="font-size: 1.5em; font-weight: bold;">目录</span></summary>
-
-- [Neovim的前世今生](#neovim的前世今生)
-- [Neovim的简单配置](#neovim的简单配置)
-  - [关于Lua](#关于lua)
-  - [配置的文件结构](#配置的文件结构)
-  - [写给曾经的 Vim用户](#写给曾经的-vim用户)
-  - [安装Neovim](#安装neovim)
-  - [简单按键配置](#简单按键配置)
-  - [选择插件管理器](#选择插件管理器)
-  - [主题配置](#主题配置)
-  - [Tree-sitter 设置](#tree-sitter-设置)
-  - [LSP 设置](#lsp-设置)
-  - [CMP 设置](#cmp-设置)
-- [参考文章](#参考文章)
-
-</details>
+# 目录
 
 # Neovim 的前世今生
 

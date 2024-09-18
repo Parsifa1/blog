@@ -85,6 +85,9 @@
   .prose h2#table-of-contents {
     @apply mb-2;
   }
+  .prose blockquote {
+    @apply not-italic;
+  }
   .prose details {
     @apply inline-block cursor-pointer select-none text-skin-base;
   }
