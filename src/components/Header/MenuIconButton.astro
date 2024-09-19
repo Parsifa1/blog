@@ -1,0 +1,55 @@
+<button
+  class="hamburger-menu focus-outline"
+  aria-label="Open Menu"
+  aria-expanded="false"
+  aria-controls="menu-items"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="menu-icon"
+  >
+    <line x1="7" y1="12" x2="21" y2="12" class="line"></line>
+    <line x1="3" y1="6" x2="21" y2="6" class="line"></line>
+    <line x1="12" y1="18" x2="21" y2="18" class="line"></line>
+    <line x1="18" y1="6" x2="6" y2="18" class="close"></line>
+    <line x1="6" y1="6" x2="18" y2="18" class="close"></line>
+  </svg>
+</button>
+
+<style>
+  svg {
+    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+  }
+  nav button {
+    @apply p-1;
+  }
+  nav button svg {
+    @apply h-6 w-6 fill-skin-base hover:fill-skin-accent;
+  }
+  .hamburger-menu {
+    @apply self-end p-2 sm:hidden;
+  }
+  .hamburger-menu svg {
+    @apply h-6 w-6 scale-125 fill-skin-base;
+  }
+  .menu-icon line {
+    @apply transition-opacity duration-75 ease-in-out;
+  }
+  .menu-icon .close {
+    opacity: 0;
+  }
+  .menu-icon.is-active .line {
+    @apply opacity-0;
+  }
+  .menu-icon.is-active .close {
+    @apply opacity-100;
+  }
+</style>

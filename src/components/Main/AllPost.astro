@@ -1,0 +1,23 @@
+---
+import LinkButton from "../LinkButton.astro";
+---
+
+<div class="all-posts-btn-wrapper">
+  <LinkButton href="/posts/">
+    All Posts
+    <svg xmlns="http://www.w3.org/2000/svg"
+      ><path
+        d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+      ></path>
+    </svg>
+  </LinkButton>
+</div>
+
+<style>
+  svg {
+    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+  }
+  .all-posts-btn-wrapper {
+    @apply my-8 text-center;
+  }
+</style>
