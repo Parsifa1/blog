@@ -34,3 +34,4 @@ pnpm-debug.log*
 
 #obsidian
 .obsidian/
+/src/content/blog/.obsidian.vimrc
