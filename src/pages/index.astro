@@ -15,9 +15,6 @@ import { SOCIALS } from "@config";
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-
 const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
@@ -48,16 +45,8 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       }
     </section>
     <Hr />
-    <Post
-      featured={true}
-      featuredPosts={featuredPosts}
-      recentPosts={recentPosts}
-    />
-    <Post
-      featured={false}
-      featuredPosts={featuredPosts}
-      recentPosts={recentPosts}
-    />
+    <Post featured={true} sortedPosts={sortedPosts} />
+    <Post featured={false} sortedPosts={sortedPosts} />
     <AllPost />
   </main>
   <Footer />
@@ -71,32 +60,13 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   #hero h1 {
     @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
   }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-  }
   #hero p {
     @apply my-2;
-  }
-  svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   .social-wrapper {
     @apply mt-4 flex flex-col sm:flex-row sm:items-center;
   }
   .social-links {
     @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-  }
-
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts {
-    @apply pb-6 pt-12;
-  }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
   }
 </style>

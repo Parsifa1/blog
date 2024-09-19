@@ -1,13 +1,16 @@
 ---
 import type { CollectionEntry } from "astro:content";
-export interface Props {
-  featured: boolean;
-  featuredPosts: CollectionEntry<"blog">[];
-  recentPosts: CollectionEntry<"blog">[];
-}
-const { featured, featuredPosts, recentPosts } = Astro.props;
 import Hr from "../Hr.astro";
 import Card from "../Card";
+
+export interface Props {
+  featured: boolean;
+  sortedPosts: CollectionEntry<"blog">[];
+}
+
+const { featured, sortedPosts } = Astro.props;
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 ---
 
 {
