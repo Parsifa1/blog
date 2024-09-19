@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
 // import remarkCollapse from "remark-collapse";
 import { typst } from "astro-typst";
 import mdx from "@astrojs/mdx";
@@ -25,7 +26,11 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkMath, [remarkToc as any, { heading: "目录" }]],
+    remarkPlugins: [
+      remarkMath,
+      remarkGfm,
+      [remarkToc as any, { heading: "目录" }],
+    ],
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
       theme: "one-dark-pro",

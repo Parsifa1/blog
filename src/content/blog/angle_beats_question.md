@@ -4,7 +4,7 @@ tags:
   - math
 author: Parsifal
 description: 一道有趣的计算几何
-modDatetime: 2024-09-19T15:42:39Z
+modDatetime: 2024-09-19T16:45:23Z
 pubDatetime: 2024-09-19T01:56:21Z
 ---
 
@@ -40,8 +40,7 @@ friend bool operator<(Point a, Point b) {
 }
 ```
 
-![](./assets/images/problemA.png)
-
+![pa](./assets/images/problemA.png)
 可以直接使用 `std::map` 维护，并将 $x < 0$ 的部分都映射到平行的另一半部分，从而方便直接判断平行，并且对共线的向量直接判断相等。
 
 ### 第一部分
