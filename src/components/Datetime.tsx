@@ -35,7 +35,7 @@ export default function Datetime({
       ) : (
         <span className="sr-only">Published:</span>
       )}
-      <span className={`italic ${size === "sm" ? "text-sm" : "text-base"}`}>
+      <span className={`${size === "sm" ? "text-sm" : "text-base"}`}>
         <FormattedDatetime
           pubDatetime={pubDatetime}
           modDatetime={modDatetime}
