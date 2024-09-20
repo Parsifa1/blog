@@ -1,6 +1,7 @@
 ---
 import AboutLayout from "../layouts/AboutLayout.astro";
 import { Image } from "astro:assets";
+import avtar from "./_assets/avatar.jpg";
 const aboutProps = {
   frontmatter: {
     title: `About`,
@@ -11,13 +12,7 @@ const aboutProps = {
 <AboutLayout {...aboutProps}>
   <h3>云楼汐</h3>
 
-  <Image
-    src="/avatar.jpg"
-    alt="avatar"
-    width={180}
-    height={180}
-    loading={"eager"}
-  />
+  <Image src={avtar} alt="avatar" width={180} height={180} loading={"eager"} />
 
   <h4>大学二年级，热爱游戏，音乐...</h4>
 
