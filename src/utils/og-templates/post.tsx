@@ -49,21 +49,41 @@ export default async (post: CollectionEntry<"blog">) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            margin: "20px",
             width: "90%",
             height: "90%",
           }}
         >
-          <p
+          <div
             style={{
-              fontSize: 72,
-              fontWeight: "bold",
-              maxHeight: "84%",
-              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              width: "90%",
+              height: "90%",
             }}
           >
-            {post.data.title}
-          </p>
+            <p
+              style={{
+                fontSize: 64,
+                fontWeight: "bold",
+                maxHeight: "84%",
+                overflow: "hidden",
+                marginBottom: "0px",
+              }}
+            >
+              {post.data.title}
+            </p>
+
+            <p
+              style={{
+                fontSize: 42,
+                maxHeight: "50%",
+                overflow: "hidden",
+              }}
+            >
+              {post.data.description}
+            </p>
+          </div>
+
           <div
             style={{
               display: "flex",
@@ -73,21 +93,41 @@ export default async (post: CollectionEntry<"blog">) => {
               fontSize: 28,
             }}
           >
-            <span>
-              by{" "}
-              <span
+            {post.data.tags.map((tag: string) => (
+              <abbr
+                key={tag}
                 style={{
-                  color: "transparent",
+                  fontSize: 32,
+                  textDecoration: "underline dotted",
+                  overflow: "hidden",
+                  fontWeight: "bold",
+                  marginLeft: "8px",
+                  marginTop: "18px",
                 }}
               >
-                "
-              </span>
-              <span style={{ overflow: "hidden", fontWeight: "bold" }}>
-                {post.data.author}
-              </span>
-            </span>
+                #{tag}
+              </abbr>
+            ))}
 
-            <span style={{ overflow: "hidden", fontWeight: "bold" }}>
+            <img
+              src="https://i1.woh.to/2023/12/20/icon232e9f5a055dc93c.jpg"
+              alt="avatar"
+              width={80}
+              height={80}
+              style={{
+                borderRadius: "9999px",
+                marginLeft: "auto",
+                marginBottom: "10px",
+              }}
+            />
+            <span
+              style={{
+                overflow: "hidden",
+                fontWeight: "bold",
+                marginLeft: "12px",
+                marginTop: "18px",
+              }}
+            >
               {SITE.title}
             </span>
           </div>
@@ -99,7 +139,12 @@ export default async (post: CollectionEntry<"blog">) => {
       height: 630,
       embedFont: true,
       fonts: (await loadGoogleFonts(
-        post.data.title + post.data.author + SITE.title + "by"
+        post.data.title +
+          post.data.description +
+          post.data.tags +
+          SITE.title +
+          "#" +
+          " "
       )) as FontOptions[],
     }
   );
