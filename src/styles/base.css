@@ -48,7 +48,7 @@
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   span[class*='katex'] {
-    @apply !text-skin-base;
+    @apply !text-skin-base overflow-x-scroll overflow-y-clip;
   }
   svg.icon-tabler {
     @apply inline-block h-6 w-6 scale-125 fill-transparent 
