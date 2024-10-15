@@ -1,13 +1,13 @@
 ---
 import { LOGO_IMAGE, SITE } from "@config";
 import Hr from "../Hr.astro";
-import { Icon } from "astro-icon/components";
-import MenuIconButton from "./MenuIconButton.astro";
-import LightDarkButton from "./LightDarkButton.astro";
-import LinkButton from "../LinkButton.astro";
+import MenuIconButton from "./Button/MenuIconButton.astro";
+import LightDarkButton from "./Button/LightDarkButton.astro";
+import SearchButton from "./Button/SearchButton.astro";
+import AchivesButton from "./Button/AchivesButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search" | "friends";
+  activeNav?: "posts" | "archives" | "tags" | "about" | "search" | "friends";
 }
 
 const { activeNav } = Astro.props;
@@ -54,22 +54,14 @@ const { activeNav } = Astro.props;
               Friends
             </a>
           </li>
-          <li>
-            <LinkButton
-              href="/search/"
-              className={`focus-outline p-3 sm:p-1 ${
-                activeNav === "search" ? "active" : ""
-              } flex`}
-              ariaLabel="search"
-              title="Search"
-            >
-              <Icon
-                name="search"
-                class="inline-block h-6 w-6 scale-125 fill-skin-base group-hover:fill-skin-accent sm:scale-100"
-              />
-              <span class="sr-only">Search</span>
-            </LinkButton>
-          </li>
+          {
+            SITE.showArchives && (
+              <li>
+                <AchivesButton activeNav={activeNav} />
+              </li>
+            )
+          }
+          <li><SearchButton activeNav={activeNav} /></li>
           {
             SITE.lightAndDarkMode && (
               <li>
@@ -85,9 +77,6 @@ const { activeNav } = Astro.props;
 </header>
 
 <style>
-  svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
-  }
   #skip-to-content {
     @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
   }
@@ -100,13 +89,6 @@ const { activeNav } = Astro.props;
   .logo {
     @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
   }
-  .hamburger-menu {
-    @apply self-end p-2 sm:hidden;
-  }
-  .hamburger-menu svg {
-    @apply h-6 w-6 scale-125 fill-skin-base;
-  }
-
   nav {
     @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
@@ -126,18 +108,8 @@ const { activeNav } = Astro.props;
   nav ul li:nth-last-child(2) {
     @apply col-span-1;
   }
-  nav a.active {
+  nav .active {
     @apply underline decoration-wavy decoration-2 underline-offset-8;
-  }
-  nav a.active svg {
-    @apply fill-skin-accent;
-  }
-
-  nav button {
-    @apply p-1;
-  }
-  nav button svg {
-    @apply h-6 w-6 fill-skin-base hover:fill-skin-accent;
   }
 </style>
 

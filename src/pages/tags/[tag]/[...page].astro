@@ -5,11 +5,14 @@ import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
 import type { GetStaticPathsOptions } from "astro";
 import { SITE } from "@config";
+
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const posts = await getCollection("blog");
   const tags = getUniqueTags(posts);
+
   return tags.flatMap(({ tag, tagName }) => {
     const tagPosts = getPostsByTag(posts, tag);
+
     return paginate(tagPosts, {
       params: { tag },
       props: { tagName },
@@ -17,6 +20,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     });
   });
 }
+
 const params = Astro.params;
 const { tag } = params;
 const { page, tagName } = Astro.props;
