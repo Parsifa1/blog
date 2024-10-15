@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import type { Page } from "astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import Header from "@components/Header/Header.astro";
@@ -9,12 +10,10 @@ import Card from "@components/Card";
 import { SITE } from "@config";
 
 export interface Props {
-  currentPage: number;
-  totalPages: number;
-  paginatedPosts: CollectionEntry<"blog">[];
+  page: Page<CollectionEntry<"blog">>;
 }
 
-const { currentPage, totalPages, paginatedPosts } = Astro.props;
+const { page } = Astro.props;
 ---
 
 <Layout title={`Posts | ${SITE.title}`}>
@@ -22,19 +21,14 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
   <Main pageTitle="归档" pageDesc="所有发布过的文章">
     <ul>
       {
-        paginatedPosts.map(({ data, slug }) => (
+        page.data.map(({ data, slug }) => (
           <Card href={`/posts/${slug}/`} frontmatter={data} />
         ))
       }
     </ul>
   </Main>
 
-  <Pagination
-    {currentPage}
-    {totalPages}
-    prevUrl={`/posts${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
-    nextUrl={`/posts/${currentPage + 1}/`}
-  />
+  <Pagination {page} />
 
-  <Footer noMarginTop={totalPages > 1} />
+  <Footer noMarginTop={page.lastPage > 1} />
 </Layout>
