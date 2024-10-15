@@ -1,4 +1,5 @@
 import type { Site, SocialObjects } from "./types";
+import { type GiscusProps } from "@giscus/react";
 
 export const SITE: Site = {
   website: "https://blog.cloudti.de", // replace this with your deployed domain
@@ -24,6 +25,20 @@ export const LOGO_IMAGE = {
   width: 50,
   height: 50,
 };
+
+export const GISCUS: GiscusProps = {
+  repo: "parsifa1/blog",
+  repoId: "R_kgDOK8DWdg",
+  category: "Announcements",
+  categoryId: "DIC_kwDOK8DWds4CjYyb",
+  mapping: "pathname",
+  reactionsEnabled: "1",
+  emitMetadata: "0",
+  inputPosition: "top",
+  lang: "zh-CN",
+  loading: "lazy",
+};
+
 export const SOCIALS: SocialObjects = [
   {
     name: "Github",
