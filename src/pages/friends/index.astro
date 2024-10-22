@@ -1,6 +1,7 @@
 ---
 import Layout from "./_layouts/Layout.astro";
 import Card from "./_components/Card.astro";
+import Comments from "@components/Comments";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
 ---
@@ -20,12 +21,19 @@ import { SITE } from "@config";
         avatar="https://i3.woh.to/2024/09/01/esu1Gov6fc3d1cb9cc8525a.webp"
         desc="活得越久的人就越邪惡，越極限"
       />
+      <Card
+        link="soft.moe"
+        title="KUN's Blog"
+        avatar="https://soft.moe/avatar/kun.webp"
+        desc="KUN IS THE CUTEST!"
+      />
       <style is:inline>
         .link-card#sakura code {
           background-color: #d6ecf0;
         }
       </style>
     </ul>
+    <Comments client:only="react" />
   </Main>
 </Layout>
 
