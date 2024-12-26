@@ -1,0 +1,194 @@
+{
+  "main": {
+    "id": "0bd49dc42f4d39c6",
+    "type": "split",
+    "children": [
+      {
+        "id": "03805ad3dce51c6e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cd4bd1ce56fa56b1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "容斥原理.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "容斥原理"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "3593f7c6d46a5c6f",
+    "type": "split",
+    "children": [
+      {
+        "id": "8fa5282dea19c664",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "69cadf0e7bdd6ae6",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "e85aee21bb577ec3",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "a9835b3c8e393723",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 255.5
+  },
+  "right": {
+    "id": "5b511fd2b1e8d9d3",
+    "type": "split",
+    "children": [
+      {
+        "id": "c419dbbc11d9c10a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "21c4e833df986012",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "77030ecb7e6dd5b8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "出链"
+            }
+          },
+          {
+            "id": "0563ece733822bab",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "a13803e88c77d4eb",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {},
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          },
+          {
+            "id": "624f9b240d5020b5",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 298.5,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "obsidian-git:Open Git source control": false
+    }
+  },
+  "active": "cd4bd1ce56fa56b1",
+  "lastOpenFiles": [
+    "容斥原理.md",
+    "neovim教程.md",
+    "[.md",
+    "assets/images/inc_exc/1.png",
+    "assets/images/inc_exc",
+    "未命名.canvas",
+    "未命名 1.canvas",
+    "2024-10-05.md",
+    "typst教程.md",
+    "angle_beats_question.md",
+    "test.md",
+    "assets/images/problemA.svg",
+    "assets/images/test.svg",
+    "assets/images/problemA.png",
+    "angle_beats.md",
+    "a_dp_question.md",
+    "未命名绘图.drawio.png",
+    "problemA.svg"
+  ]
+}

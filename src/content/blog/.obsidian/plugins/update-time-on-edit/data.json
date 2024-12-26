@@ -1,0 +1,17 @@
+{
+  "dateFormat": "yyyy-MM-dd'T'HH:mm:ss'Z'",
+  "enableCreateTime": true,
+  "headerUpdated": "modDatetime",
+  "headerCreated": "pubDatetime",
+  "minMinutesBetweenSaves": 1,
+  "ignoreGlobalFolder": [],
+  "ignoreCreatedFolder": [],
+  "enableExperimentalHash": false,
+  "fileHashMap": {
+    "angle_beats.md": "330073f070d25e6c46f512372a18b3390d52fb34c347d82f35d5322e8f48f861",
+    "test.md": "eedde1465540758c16be5e97a5bf45850806742ad708807d980b0baef4ffae6f",
+    "neovim教程.md": "e86b3291cd7b9236a45f22c7815bfb905bc661ed7c6f2573c6fb47f34ec22d63",
+    "angle_beats_question.md": "8150c6e0e6e24856dc2149c56c3d10e8a0207e70bb3c4f5ba5a3c0f63d109fa2",
+    "容斥原理.md": "54ba9ebff9530686894ecaf10afbd4ef8eed7110696b97fe76e1e382cee7998c"
+  }
+}
