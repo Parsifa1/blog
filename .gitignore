@@ -33,5 +33,4 @@ pnpm-debug.log*
 .idea/
 
 #obsidian
-# .obsidian/
-# /src/content/blog/.obsidian.vimrc
+.obsidian/
