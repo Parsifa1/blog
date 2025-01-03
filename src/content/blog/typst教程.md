@@ -5,7 +5,7 @@ description: 使用typst ，与\反斜杠说再见
 author: Parsifal
 tags:
   - computer
-modDatetime: 2025-01-05T08:13:49Z
+modDatetime: 2025-01-05T08:14:16Z
 ---
 
 # 咕咕咕
