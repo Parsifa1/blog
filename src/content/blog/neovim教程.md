@@ -1,5 +1,5 @@
 ---
-title: Neovim浅谈与安利
+title: Neovim 浅谈与安利
 pubDatetime: 2023-12-21T08:00:00Z
 modDatetime: 2024-09-19T03:41:30Z
 description: 你应该使用这个世界上最快的编辑器（确信
