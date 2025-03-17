@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header/Header.astro";
 import Footer from "@components/Footer.astro";
 import Datetime from "@components/Datetime";
+import Goback from "@assets/icons/goback.svg";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
@@ -57,13 +58,10 @@ const layoutProps = {
       class="focus-outline mb-2 mt-8 flex hover:opacity-75"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
+      <Goback
         class="inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent"
-        ><path
-          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-        ></path>
-      </svg><span>Go back</span>
+      />
+      <span>Go back</span>
     </button>
   </div>
   <main id="main-content">
@@ -89,14 +87,9 @@ const layoutProps = {
         id="back-to-top"
         class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
+        <Goback
           class="inline-block h-6 w-6 rotate-90 fill-skin-base group-hover:fill-skin-accent"
-        >
-          <path
-            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-          ></path>
-        </svg>
+        />
         <span>Back to Top</span>
       </button>
 

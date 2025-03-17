@@ -119,10 +119,20 @@ const { activeNav } = Astro.props;
     const menuBtn = document.querySelector(".hamburger-menu");
     const menuIcon = document.querySelector(".menu-icon");
     const menuItems = document.querySelector("#menu-items");
-
+    const menuClose = menuIcon?.querySelectorAll(".close");
+    menuClose?.forEach(line => {
+      line.classList.toggle("opacity-0");
+    });
     menuBtn?.addEventListener("click", () => {
       const menuExpanded = menuBtn.getAttribute("aria-expanded") === "true";
       menuIcon?.classList.toggle("is-active");
+      const menuLines = menuIcon?.querySelectorAll(".line");
+      menuLines?.forEach(line => {
+        line.classList.toggle("opacity-0");
+      });
+      menuClose?.forEach(line => {
+        line.classList.toggle("opacity-100");
+      });
       menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
       menuBtn.setAttribute(
         "aria-label",

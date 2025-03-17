@@ -39,7 +39,7 @@ export const GISCUS: GiscusProps = {
   loading: "lazy",
 };
 
-export const SOCIALS: SocialObjects = [
+export const SOCIALS = [
   {
     name: "Github",
     href: "https://github.com/Parsifa1",
@@ -66,7 +66,7 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "Telegram",
-    href: "https://t.me/aldric_li",
+    href: "https://t.me/c1oudtide",
     linkTitle: `${SITE.title} on Telegram`,
     active: true,
   },

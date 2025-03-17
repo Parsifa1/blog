@@ -4,6 +4,7 @@ export interface Props {
 }
 
 import Hr from "./Hr.astro";
+import Noscript from "@assets/icons/noscript.svg";
 import { Icon } from "astro-icon/components";
 
 const currentYear = new Date().getFullYear();
@@ -20,9 +21,9 @@ const { noMarginTop = false } = Astro.props;
   <div class="footer-wrapper">
     <div class="text-gray-base">
       <span class="icon">
-        <Icon name="noscript" />
+        <Noscript />
       </span>
-      Works well with little JavaScript.
+      Works well with little JavaScript
     </div>
 
     <div>

@@ -1,7 +1,7 @@
 ---
 import { SOCIALS } from "@config";
 import LinkButton from "./LinkButton.astro";
-import socialIcons from "@assets/socialIcons";
+import { Icon } from "astro-icon/components";
 
 export interface Props {
   centered?: boolean;
@@ -18,7 +18,7 @@ const { centered = false } = Astro.props;
         className="link-button"
         title={social.linkTitle}
       >
-        <Fragment set:html={socialIcons[social.name]} />
+        <Icon name={`simple-icons:${social.name.toLowerCase()}`} />
         <span class="sr-only">{social.linkTitle}</span>
       </LinkButton>
     ))
@@ -27,9 +27,12 @@ const { centered = false } = Astro.props;
 
 <style>
   .social-icons {
-    @apply flex-wrap justify-center gap-1;
+    @apply flex-wrap justify-center gap-10;
   }
   .link-button {
-    @apply p-2 hover:rotate-6 sm:p-1;
+    @apply p-2 hover:rotate-6 sm:p-2;
+  }
+  [data-icon] {
+    @apply translate-y-[3px] scale-150;
   }
 </style>

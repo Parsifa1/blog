@@ -1,22 +1,22 @@
 ---
 import LinkButton from "./LinkButton.astro";
-import socialIcons from "@assets/socialIcons";
+import { Icon } from "astro-icon/components";
 
 const URL = Astro.url;
 
 const shareLinks = [
   {
-    name: "Twitter",
+    name: "x",
     href: "https://twitter.com/intent/tweet?url=",
     linkTitle: `Tweet this post`,
   },
   {
-    name: "Telegram",
+    name: "telegram",
     href: "https://t.me/share/url?url=",
     linkTitle: `Share this post via Telegram`,
   },
   {
-    name: "Mail",
+    name: "mailgun",
     href: "mailto:?subject=See%20this%20post&body=",
     linkTitle: `Share this post via email`,
   },
@@ -33,7 +33,7 @@ const shareLinks = [
           className="link-button"
           title={social.linkTitle}
         >
-          <Fragment set:html={socialIcons[social.name]} />
+          <Icon name={`simple-icons:${social.name}`} />
           <span class="sr-only">{social.linkTitle}</span>
         </LinkButton>
       ))
@@ -47,5 +47,8 @@ const shareLinks = [
   }
   .link-button {
     @apply scale-90 p-2 hover:rotate-6 sm:p-1;
+  }
+  [data-icon] {
+    @apply scale-125;
   }
 </style>
