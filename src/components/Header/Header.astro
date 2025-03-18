@@ -119,20 +119,24 @@ const { activeNav } = Astro.props;
     const menuBtn = document.querySelector(".hamburger-menu");
     const menuIcon = document.querySelector(".menu-icon");
     const menuItems = document.querySelector("#menu-items");
-    const menuClose = menuIcon?.querySelectorAll(".close");
-    menuClose?.forEach(line => {
-      line.classList.toggle("opacity-0");
-    });
+    const menuLines = menuIcon?.querySelectorAll(".line");
+    const topMenu = menuIcon?.querySelector(".top");
+    const midMenu = menuIcon?.querySelector(".mid");
+    const botMenu = menuIcon?.querySelector(".bot");
+
+    midMenu?.classList.add("origin-center");
+    topMenu?.classList.add("origin-[25%_50%]");
+    botMenu?.classList.add("origin-[25%_50%]");
+    menuLines?.forEach(l => l.classList.add("duration-300"));
+
     menuBtn?.addEventListener("click", () => {
+      //svg transitions
+      topMenu?.classList.toggle("-rotate-45");
+      midMenu?.classList.toggle("scale-x-[0]");
+      botMenu?.classList.toggle("rotate-45");
+      //menuIcon/button attr
       const menuExpanded = menuBtn.getAttribute("aria-expanded") === "true";
       menuIcon?.classList.toggle("is-active");
-      const menuLines = menuIcon?.querySelectorAll(".line");
-      menuLines?.forEach(line => {
-        line.classList.toggle("opacity-0");
-      });
-      menuClose?.forEach(line => {
-        line.classList.toggle("opacity-100");
-      });
       menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
       menuBtn.setAttribute(
         "aria-label",

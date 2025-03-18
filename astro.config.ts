@@ -11,6 +11,8 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import icon from "astro-icon";
+import sentry from "@sentry/astro";
+import spotlightjs from "@spotlightjs/astro";
 export default defineConfig({
   site: SITE.website,
   integrations: [
@@ -24,6 +26,8 @@ export default defineConfig({
     icon({
       iconDir: "src/assets/icons",
     }),
+    sentry(),
+    spotlightjs(),
   ],
   markdown: {
     remarkPlugins: [
