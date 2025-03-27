@@ -30,11 +30,7 @@ export default defineConfig({
     spotlightjs(),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkMath,
-      remarkGfm,
-      [remarkToc as any, { heading: "目录" }],
-    ],
+    remarkPlugins: [remarkMath, remarkGfm, [remarkToc, { heading: "目录" }]],
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
       theme: "one-dark-pro",

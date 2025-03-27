@@ -1,3 +1,5 @@
+import typography from "@tailwindcss/typography";
+
 function withOpacity(variableName) {
   return ({ opacityValue }) => {
     if (opacityValue !== undefined) {
@@ -100,4 +102,4 @@ export const theme = {
     },
   },
 };
-export const plugins = [require("@tailwindcss/typography")];
+export const plugins = [typography];

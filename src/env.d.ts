@@ -1,9 +1,9 @@
-/// <reference path="../.astro/types.d.ts" />
+/// <reference types="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 declare namespace App {
   interface Locals {
     title: string;
-    metas: any;
+    metas: unknown;
     noscript: boolean;
   }
 }
