@@ -45,8 +45,5 @@ export default defineConfig({
       exclude: ["@resvg/resvg-js"],
     },
   },
-  experimental: {
-    svg: true,
-  },
   scopedStyleStrategy: "where",
 });
