@@ -1,16 +1,16 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header/Header.astro";
 import Footer from "@components/Footer.astro";
-import Rss from "@components/Main/Rss.astro";
-import AllPost from "@components/Main/AllPost.astro";
+import Header from "@components/Header/Header.astro";
 import Hr from "@components/Hr.astro";
+import AllPost from "@components/Main/AllPost.astro";
 import Post from "@components/Main/Post.astro";
+import Rss from "@components/Main/Rss.astro";
 import Socials from "@components/Socials.astro";
-import { Image } from "astro:assets";
-import getSortedPosts from "@utils/getSortedPosts";
 import { SOCIALS } from "@config";
+import Layout from "@layouts/Layout.astro";
+import getSortedPosts from "@utils/getSortedPosts";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
 const posts = await getCollection("blog");
 
@@ -36,7 +36,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       />
       {
         // only display if at least one social link is enabled
-        socialCount > 0 && (
+          socialCount > 0 && (
           <div class="social-wrapper">
             <div class="social-links">Social Links:</div>
             <Socials />

@@ -1,13 +1,13 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import type { Page } from "astro";
+import Card from "@components/Card";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header/Header.astro";
+import Pagination from "@components/Pagination.astro";
+import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
-import Header from "@components/Header/Header.astro";
-import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
-import Card from "@components/Card";
-import { SITE } from "@config";
+import type { Page } from "astro";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
@@ -20,11 +20,7 @@ const { page } = Astro.props;
   <Header activeNav="posts" />
   <Main pageTitle="博文" pageDesc="所有发布过的文章.">
     <ul>
-      {
-        page.data.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
-        ))
-      }
+      {page.data.map(({ data, slug }) => <Card href={`/posts/${slug}/`} frontmatter={data} />)}
     </ul>
   </Main>
 

@@ -8,18 +8,16 @@ const { tag, size = "sm" } = Astro.props;
 import TagIcon from "@assets/icons/tag.svg";
 ---
 
-<li
-  class={`inline-block ${
-    size === "sm" ? "my-1 underline-offset-4" : "my-3 mx-1 underline-offset-8"
-  }`}
->
+<li class={`inline-block ${size === "sm" ? "my-1 underline-offset-4" : "my-3 mx-1 underline-offset-8"}`}>
   <a
     href={`/tags/${tag}/`}
     transition:name={tag}
     class={`${size === "sm" ? "text-sm" : "text-lg"} pr-2 group`}
   >
     <TagIcon
-      class={`${size === "sm" ? " scale-75" : "scale-110"} inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent`}
+      class={`${
+        size === "sm" ? " scale-75" : "scale-110"
+      } inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent`}
     />
     &nbsp;<span>{tag}</span>
   </a>

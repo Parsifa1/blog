@@ -1,5 +1,5 @@
-import Giscus, { type Theme } from "@giscus/react";
 import { GISCUS } from "@config";
+import Giscus, { type Theme } from "@giscus/react";
 import { useEffect, useState } from "react";
 
 interface CommentsProps {
@@ -14,7 +14,7 @@ export default function Comments({
   const [theme, setTheme] = useState(() => {
     const currentTheme = localStorage.getItem("theme");
     const browserTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
+        .matches
       ? "dark"
       : "light";
 

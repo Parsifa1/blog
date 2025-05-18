@@ -1,9 +1,9 @@
 ---
-import type { Page } from "astro";
-import Prev from "@assets/icons/prev.svg";
 import Next from "@assets/icons/next.svg";
-import LinkButton from "./LinkButton.astro";
+import Prev from "@assets/icons/prev.svg";
+import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
+import LinkButton from "./LinkButton.astro";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;

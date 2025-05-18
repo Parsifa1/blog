@@ -30,13 +30,13 @@ const {
 
 const socialImageURL = new URL(
   ogImage ?? SITE.ogImage ?? "og.png",
-  Astro.url.origin
+  Astro.url.origin,
 ).href;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html
-  lang=`${LOCALE.lang ?? "en"}`
+  lang={`${LOCALE.lang ?? "en"}`}
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
@@ -99,9 +99,9 @@ const socialImageURL = new URL(
 
     {
       // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
-      // include google-site-verification tag in the heading
-      // Learn more: https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag
-      googleSiteVerification && (
+          // include google-site-verification tag in the heading
+          // Learn more: https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag
+          googleSiteVerification && (
         <meta
           name="google-site-verification"
           content={googleSiteVerification}

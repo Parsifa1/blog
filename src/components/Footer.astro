@@ -3,9 +3,9 @@ export interface Props {
   source?: string;
 }
 
-import Hr from "./Hr.astro";
 import Noscript from "@assets/icons/noscript.svg";
 import { Icon } from "astro-icon/components";
+import Hr from "./Hr.astro";
 
 const currentYear = new Date().getFullYear();
 
@@ -27,18 +27,15 @@ const { noMarginTop = false } = Astro.props;
     </div>
 
     <div>
-      <span
-        >Copyright by <a href="https://github.com/parsifa1"> Parsifa1</a> &#169;
-        {currentYear}</span
-      >
+      <span>Copyright by <a href="https://github.com/parsifa1"> Parsifa1</a>
+        &#169;
+        {currentYear}</span>
     </div>
 
     <div data-build={Date.now()}>
-      Built with <a href="https://astro.build/"
-        ><span class="icon"><Icon name="simple-icons:astro" /></span>{
+      Built with <a href="https://astro.build/"><span class="icon"><Icon name="simple-icons:astro" /></span>{
           Astro.generator
-        }</a
-      >
+        }</a>
     </div>
   </div>
 

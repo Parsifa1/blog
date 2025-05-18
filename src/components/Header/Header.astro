@@ -1,10 +1,10 @@
 ---
 import { LOGO_IMAGE, SITE } from "@config";
 import Hr from "../Hr.astro";
-import MenuIconButton from "./Button/MenuIconButton.astro";
-import LightDarkButton from "./Button/LightDarkButton.astro";
-import SearchButton from "./Button/SearchButton.astro";
 import AchivesButton from "./Button/AchivesButton.astro";
+import LightDarkButton from "./Button/LightDarkButton.astro";
+import MenuIconButton from "./Button/MenuIconButton.astro";
+import SearchButton from "./Button/SearchButton.astro";
 
 export interface Props {
   activeNav?: "posts" | "archives" | "tags" | "about" | "search" | "friends";
@@ -130,17 +130,17 @@ const { activeNav } = Astro.props;
     menuLines?.forEach(l => l.classList.add("duration-300"));
 
     menuBtn?.addEventListener("click", () => {
-      //svg transitions
+      // svg transitions
       topMenu?.classList.toggle("-rotate-45");
       midMenu?.classList.toggle("scale-x-[0]");
       botMenu?.classList.toggle("rotate-45");
-      //menuIcon/button attr
+      // menuIcon/button attr
       const menuExpanded = menuBtn.getAttribute("aria-expanded") === "true";
       menuIcon?.classList.toggle("is-active");
       menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
       menuBtn.setAttribute(
         "aria-label",
-        menuExpanded ? "Open Menu" : "Close Menu"
+        menuExpanded ? "Open Menu" : "Close Menu",
       );
       menuItems?.classList.toggle("display-none");
     });

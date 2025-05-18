@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Hr from "../Hr.astro";
 import Card from "../Card";
+import Hr from "../Hr.astro";
 
 export interface Props {
   featured: boolean;
@@ -19,13 +19,15 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       <section id="featured">
         <h2>Featured</h2>
         <ul>
-          {featuredPosts.map(({ data, slug }) => (
-            <Card
-              href={`/posts/${slug}/`}
-              frontmatter={data}
-              secHeading={false}
-            />
-          ))}
+          {
+            featuredPosts.map(({ data, slug }) => (
+              <Card
+                href={`/posts/${slug}/`}
+                frontmatter={data}
+                secHeading={false}
+              />
+            ))
+          }
         </ul>
       </section>
       {recentPosts.length > 0 && <Hr />}
@@ -38,16 +40,17 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     <section id="recent-posts">
       <h2>Recent Posts</h2>
       <ul>
-        {recentPosts.map(
-          ({ data, slug }, index) =>
-            index < 4 && (
-              <Card
-                href={`/posts/${slug}/`}
-                frontmatter={data}
-                secHeading={false}
-              />
-            )
-        )}
+        {
+          recentPosts.map(
+        ({ data, slug }, index) => index < 4 && (
+            <Card
+              href={`/posts/${slug}/`}
+              frontmatter={data}
+              secHeading={false}
+            />
+          ),
+      )
+        }
       </ul>
     </section>
   )

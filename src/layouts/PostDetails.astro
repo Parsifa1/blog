@@ -1,14 +1,14 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header/Header.astro";
-import Footer from "@components/Footer.astro";
-import Datetime from "@components/Datetime";
 import Goback from "@assets/icons/goback.svg";
-import type { CollectionEntry } from "astro:content";
-import { slugifyStr } from "@utils/slugify";
-import ShareLinks from "@components/ShareLinks.astro";
 import Comments from "@components/Comments";
+import Datetime from "@components/Datetime";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header/Header.astro";
+import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import { slugifyStr } from "@utils/slugify";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -31,7 +31,7 @@ const { Content } = await post.render();
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
   ogImageUrl ?? `/posts/${slugifyStr(title)}/index.png`,
-  Astro.url.origin
+  Astro.url.origin,
 ).href;
 
 const layoutProps = {
@@ -58,9 +58,7 @@ const layoutProps = {
       class="focus-outline mb-2 mt-8 flex hover:opacity-75"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
-      <Goback
-        class="inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent"
-      />
+      <Goback class="inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent" />
       <span>Go back</span>
     </button>
   </div>
@@ -80,16 +78,12 @@ const layoutProps = {
 
     <ul class="my-8"></ul>
 
-    <div
-      class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
-    >
+    <div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4">
       <button
         id="back-to-top"
         class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
       >
-        <Goback
-          class="inline-block h-6 w-6 rotate-90 fill-skin-base group-hover:fill-skin-accent"
-        />
+        <Goback class="inline-block h-6 w-6 rotate-90 fill-skin-base group-hover:fill-skin-accent" />
         <span>Back to Top</span>
       </button>
 
@@ -115,8 +109,7 @@ const layoutProps = {
   function createProgressBar() {
     // Create the main container div
     const progressContainer = document.createElement("div");
-    progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+    progressContainer.className = "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
 
     // Create the progress bar div
     const progressBar = document.createElement("div");
@@ -134,11 +127,10 @@ const layoutProps = {
   /** Update the progress bar
    *  when user scrolls */
   function updateScrollProgress() {
-    const winScroll =
-      document.body.scrollTop || document.documentElement.scrollTop;
-    const height =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
+    const winScroll = document.body.scrollTop
+      || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight
+      - document.documentElement.clientHeight;
     const scrolled = (winScroll / height) * 100;
     if (document) {
       const myBar = document.getElementById("myBar");
@@ -153,7 +145,7 @@ const layoutProps = {
    *  allowing sharing of sections easily */
   function addHeadingLinks() {
     const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
+      document.querySelectorAll("h2, h3, h4, h5, h6"),
     );
     for (const heading of headings) {
       heading.classList.add("group");

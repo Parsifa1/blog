@@ -90,7 +90,6 @@ Nvim 的配置目录在 ~/.config/nvim 下。在 Linux/Mac 系统上，Nvim 会�
 │   │   ├── cpp.lua
 │   │   └── rust.lua
 │   └── ......
-
 ```
 
 ## 写给曾经的 Vim用户
@@ -161,7 +160,6 @@ vim.opt.incsearch = true -- search as characters are entered
 vim.opt.hlsearch = false -- do not highlight matches
 vim.opt.ignorecase = true -- ignore case in searches by default
 vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entered
-
 ```
 
 然后打开 init.lua，用 require 导入刚才写的 option.lua 文件
@@ -225,7 +223,6 @@ set("n", "za", "za")
 -- 其他
 set({ "n", "v" }, "H", "^")
 set({ "n", "v" }, "L", "$")
-
 ```
 
 ## 选择插件管理器
@@ -303,7 +300,6 @@ return {
         require("nightfox").setup()
     end
 }
-
 ```
 
 在 lua 文件夹下创建 custom.lua , 存放一些自定义函数，美化设定，以及常用的nerd font 图标。

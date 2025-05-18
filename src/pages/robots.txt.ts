@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro";
 import { SITE } from "@config";
+import type { APIRoute } from "astro";
 
 const robots = `
 User-agent: Googlebot

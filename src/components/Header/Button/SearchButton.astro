@@ -1,14 +1,12 @@
 ---
-import LinkButton from "@components/LinkButton.astro";
 import Search from "@assets/icons/search.svg";
+import LinkButton from "@components/LinkButton.astro";
 const { activeNav } = Astro.props;
 ---
 
 <LinkButton
   href="/search/"
-  className={`focus-outline p-3 sm:p-1 ${
-    activeNav === "search" ? "active !fill-skin-accent" : ""
-  } flex`}
+  className={`focus-outline p-3 sm:p-1 ${activeNav === "search" ? "active !fill-skin-accent" : ""} flex`}
   ariaLabel="search"
   title="Search"
 >
