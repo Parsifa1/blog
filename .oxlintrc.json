@@ -1,24 +1,21 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["import", "typescript", "unicorn"],
-  "env": {
-    "browser": true
-  },
-  "globals": {
-    "foo": "readonly"
-  },
+  "env": { "browser": true },
   "settings": {},
   "rules": {
     "eqeqeq": "warn",
-    "import/no-cycle": "error",
-    "react/self-closing-comp": ["error", {
-      "html": false
-    }]
+    "import/no-cycle": "error"
   },
   "overrides": [{
     "files": ["*.test.ts", "*.spec.ts"],
     "rules": {
       "@typescript-eslint/no-explicit-any": "off"
+    }
+  }, {
+    "files": ["*.astro"],
+    "rules": {
+      "no-unused-vars": "off"
     }
   }]
 }
