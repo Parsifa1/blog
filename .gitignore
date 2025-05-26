@@ -32,6 +32,9 @@ pnpm-debug.log*
 .pnp.*
 .idea/
 
-#obsidian
+# obsidian
 .obsidian/
 /src/content/blog/.obsidian.vimrc
+
+# nix
+.direnv
