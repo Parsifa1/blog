@@ -1,5 +1,16 @@
 import { type GiscusProps } from "@giscus/react";
-import type { Site } from "./types";
+
+type Site = {
+  website: string;
+  author: string;
+  desc: string;
+  title: string;
+  ogImage?: string;
+  lightAndDarkMode: boolean;
+  postPerPage: number;
+  scheduledPostMargin: number;
+  showArchives: boolean;
+};
 
 export const SITE: Site = {
   website: "https://blog.cloudti.de", // replace this with your deployed domain

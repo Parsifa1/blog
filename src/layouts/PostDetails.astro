@@ -9,6 +9,7 @@ import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import { slugifyStr } from "@utils/slugify";
 import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -26,7 +27,7 @@ const {
   modDatetime,
 } = post.data;
 
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(

@@ -22,8 +22,19 @@ export default defineConfig({
     }),
     react(),
     sitemap(),
-    typst(),
     mdx(),
+    typst({
+      options: {
+        remPx: 14,
+      },
+      target: (id: string) => {
+        console.debug(`Detecting ${id}`);
+        if (id.endsWith(".html.typ")) {
+          return "html";
+        }
+        return "svg";
+      },
+    }),
     icon({
       iconDir: "src/assets/icons",
     }),
@@ -43,7 +54,7 @@ export default defineConfig({
       external: ["@myriaddreamin/typst-ts-node-compiler"],
     },
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
+      exclude: ["@resvg/resvg-js", "katex"],
     },
   },
   scopedStyleStrategy: "where",
