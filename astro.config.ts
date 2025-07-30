@@ -1,5 +1,6 @@
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import remarkFigure from "@microflash/remark-figure-caption";
 import { defineConfig } from "astro/config";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
@@ -42,7 +43,9 @@ export default defineConfig({
     spotlightjs(),
   ],
   markdown: {
-    remarkPlugins: [remarkMath, remarkGfm, [remarkToc, { heading: "目录" }]],
+    remarkPlugins: [remarkMath, remarkGfm, [remarkToc, { heading: "目录" }], [remarkFigure, {
+      captionClassName: "text-center",
+    }]],
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
       theme: "one-dark-pro",

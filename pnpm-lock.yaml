@@ -35,6 +35,9 @@ importers:
       '@iconify-json/simple-icons':
         specifier: ^1.2.38
         version: 1.2.38
+      '@microflash/remark-figure-caption':
+        specifier: ^2.0.2
+        version: 2.0.2
       '@resvg/resvg-js':
         specifier: ^2.6.2
         version: 2.6.2
@@ -870,6 +873,9 @@ packages:
 
   '@mdx-js/mdx@3.1.0':
     resolution: {integrity: sha512-/QxEhPAvGwbQmy1Px8F899L5Uc2KZ6JtXwlCgJmjSTBedwOZkByYcBG4GceIGPXRDsmfxhHazuS+hlOShRLeDw==}
+
+  '@microflash/remark-figure-caption@2.0.2':
+    resolution: {integrity: sha512-idUhZ1HE7eS5no11uEwTAHvWCzbG+2uQHE6NtONjq3zgZU+x/NYbDFnJNScXJA0RD3HbCu8QJ9Pf3CTUBztAmg==}
 
   '@myriaddreamin/typst-ts-node-compiler-android-arm-eabi@0.6.0-rc1':
     resolution: {integrity: sha512-O3wMPVB2qdCC67fYt1KmimT93Q8LW02VNsz6l6UOQJy5Ez8VloYF569kT6D+UqRUr17QBeJWpjTdxoaCbRmnkg==}
@@ -4420,6 +4426,9 @@ packages:
   unist-util-remove-position@5.0.0:
     resolution: {integrity: sha512-Hp5Kh3wLxv0PHj9m2yZhhLt58KzPtEYKQQ4yxfYFEO7EvHwzyDYnduhHnY1mDxoqr7VUwVuHXk9RXKIiYS1N8Q==}
 
+  unist-util-remove@4.0.0:
+    resolution: {integrity: sha512-b4gokeGId57UVRX/eVKej5gXqGlc9+trkORhFJpu9raqZkZhU0zm8Doi05+HaiBsMEIJowL+2WtQ5ItjsngPXg==}
+
   unist-util-stringify-position@4.0.0:
     resolution: {integrity: sha512-0ASV06AAoKCDkS2+xw5RXJywruurpbC4JZSm7nr7MOt1ojAzvyyaO+UxZf18j8FCF6kmzCZKcAgN/yu2gm2XgQ==}
 
@@ -5547,6 +5556,15 @@ snapshots:
       vfile: 6.0.3
     transitivePeerDependencies:
       - acorn
+      - supports-color
+
+  '@microflash/remark-figure-caption@2.0.2':
+    dependencies:
+      hast-util-whitespace: 3.0.0
+      mdast-util-from-markdown: 2.0.2
+      unist-util-remove: 4.0.0
+      unist-util-visit: 5.0.0
+    transitivePeerDependencies:
       - supports-color
 
   '@myriaddreamin/typst-ts-node-compiler-android-arm-eabi@0.6.0-rc1':
@@ -9957,6 +9975,12 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       unist-util-visit: 5.0.0
+
+  unist-util-remove@4.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
+      unist-util-is: 6.0.0
+      unist-util-visit-parents: 6.0.1
 
   unist-util-stringify-position@4.0.0:
     dependencies:

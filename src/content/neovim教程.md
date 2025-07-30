@@ -14,7 +14,7 @@ tags:
 
 # Neovim 的前世今生
 
-![head](./assets/images/nvim_totual/nvim01.jpg)
+![Vim vs. Neovim](./assets/images/nvim_totual/nvim01.jpg)
 
 想要谈谈 Neovim，那就不得不谈谈它的发源---大名鼎鼎的 Vim 编辑器。
 
