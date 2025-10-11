@@ -41,6 +41,7 @@ friend bool operator<(Point a, Point b) {
 ```
 
 ![problem A](./assets/images/problemA.png)
+
 可以直接使用 `std::map` 维护，并将 $x < 0$ 的部分都映射到平行的另一半部分，从而方便直接判断平行，并且对共线的向量直接判断相等。
 
 ### 第一部分
