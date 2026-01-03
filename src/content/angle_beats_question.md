@@ -73,7 +73,8 @@ for (auto x : p) {
 
 ### 完整代码
 
-```cpp
+```cpp collapse={6-37} collapseStyle=collapsible-auto
+//solve.cpp
 #include <bits/stdc++.h>
 using i64 = long long;
 const double eps = 1e-9;

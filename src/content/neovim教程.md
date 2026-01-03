@@ -328,7 +328,7 @@ Tree-sitter 是一个非常快的语法解析库，能够提供轻量，快速�
 
 - 在 `core` 文件夹中创建 `tree-sitter.lua` 文件，加入如下内容：
 
-```lua
+```lua title="tree-sitter.lua" {2}
 return {
     "nvim-treesitter/nvim-treesitter",
     event = "BufReadPre",
