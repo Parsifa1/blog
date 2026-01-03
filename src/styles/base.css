@@ -30,10 +30,12 @@
     --color-gray: 156, 163, 175;
     --color-hrbg: linear-gradient(45deg, #ffc2d1 25%, #4d4d6b 25%) 0px 0 / 20px
       20px;
-    .astro-code,
-    .astro-code span {
-      color: var(--shiki-dark) !important;
-      background-color: var(--shiki-dark-bg) !important;
+    svg.typst-doc {
+      --glyph_fill: #ffffff;
+      --glyph_stroke: #ffffff;
+    }
+    svg.typst-doc path {
+      stroke: #ffffff;
     }
   }
   #sun-svg,
