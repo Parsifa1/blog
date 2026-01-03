@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": "src",
     "jsx": "react-jsx",
+    "plugins": [{
+      "name": "@mdx-js/typescript-plugin"
+    }],
     "paths": {
       "@assets/*": ["assets/*"],
       "@config": ["config.ts"],

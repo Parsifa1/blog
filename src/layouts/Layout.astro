@@ -13,7 +13,7 @@ export interface Props {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
-  pubDatetime?: Date;
+  pubDatetime?: Date | string;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
 }
@@ -64,7 +64,7 @@ const socialImageURL = new URL(
       pubDatetime && (
         <meta
           property="article:published_time"
-          content={pubDatetime.toISOString()}
+          content={new Date(pubDatetime).toISOString()}
         />
       )
     }

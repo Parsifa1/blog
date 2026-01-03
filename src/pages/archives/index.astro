@@ -33,7 +33,7 @@ const MonthMap: Record<string, string> = {
   <Main pageTitle="归档" pageDesc="所有归档的文章.">
     {
       Object.entries(
-        getPostsByGroupCondition(posts, post => post.data.pubDatetime.getFullYear()),
+        getPostsByGroupCondition(posts, post => new Date(post.data.pubDatetime).getFullYear()),
       )
         .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
         .map(([year, yearGroup]) => (
@@ -44,7 +44,7 @@ const MonthMap: Record<string, string> = {
             Object.entries(
           getPostsByGroupCondition(
             yearGroup,
-            post => post.data.pubDatetime.getMonth() + 1,
+            post => new Date(post.data.pubDatetime).getMonth() + 1,
           ),
         )
           .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))

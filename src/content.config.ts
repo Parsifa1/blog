@@ -3,12 +3,12 @@ import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  loader: glob({ pattern: "**.md", base: "./src/content" }),
+  loader: glob({ pattern: ["**.md", "**.mdx", "**.typ"], base: "./src/content" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
       description: z.string(),
-      pubDatetime: z.date(),
+      pubDatetime: z.date().or(z.string()),
       author: z.string().default(SITE.author),
       modDatetime: z.date().optional().nullable(),
       canonicalURL: z.string().optional(),
