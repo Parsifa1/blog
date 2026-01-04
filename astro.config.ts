@@ -5,8 +5,6 @@ import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import rehypeFigure from "@microflash/rehype-figure";
 import remarkFigure from "@microflash/remark-figure-caption";
-import sentry from "@sentry/astro";
-import spotlightjs from "@spotlightjs/astro";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import { typst } from "astro-typst";
@@ -32,8 +30,6 @@ export default defineConfig({
     mdx(),
     typst({ options: { remPx: 14 }, target: "svg" }),
     icon({ iconDir: "src/assets/icons" }),
-    sentry(),
-    spotlightjs(),
   ],
   markdown: {
     remarkPlugins: [remarkMath, remarkGfm, [remarkToc, { heading: "目录" }], [remarkFigure, {

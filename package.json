@@ -33,8 +33,6 @@
     "@myriaddreamin/typst-ts-renderer": "^0.7.0-rc2",
     "@myriaddreamin/typst.ts": "0.7.0-rc2",
     "@resvg/resvg-js": "^2.6.2",
-    "@sentry/astro": "^9.47.1",
-    "@spotlightjs/astro": "^3.2.6",
     "@types/react-dom": "^18.3.7",
     "astro": "^5.16.6",
     "astro-expressive-code": "^0.41.5",
