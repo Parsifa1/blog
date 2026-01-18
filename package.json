@@ -40,6 +40,7 @@
     "astro-typst": "^0.12.3",
     "fuse.js": "^7.1.0",
     "github-slugger": "^2.0.0",
+    "katex": "^0.16.27",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rehype-katex": "^7.0.1",

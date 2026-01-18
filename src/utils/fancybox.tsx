@@ -1,6 +1,6 @@
 import { Fancybox } from "@fancyapps/ui";
 import { useEffect } from "react";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
+// import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 export default function ImageZoomer() {
   useEffect(() => {

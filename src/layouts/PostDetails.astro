@@ -9,6 +9,8 @@ import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import { slugifyStr } from "@utils/slugify";
 import type { CollectionEntry } from "astro:content";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import "/node_modules/katex/dist/katex.min.css";
 import { render } from "astro:content";
 
 export interface Props {
@@ -49,9 +51,6 @@ const layoutProps = {
 
 <Layout {...layoutProps}>
   <Header />
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
-
   <div class="mx-auto flex w-full max-w-4xl justify-start px-2">
     <button
       class="focus-outline mb-2 mt-8 flex hover:opacity-75"
