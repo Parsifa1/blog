@@ -33,6 +33,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         width={300}
         height={300}
         loading={"eager"}
+        fetchpriority={"high"}
       />
       {
         // only display if at least one social link is enabled

@@ -96,8 +96,6 @@ const socialImageURL = new URL(
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
-
     <meta name="theme-color" content="" />
 
     {
@@ -114,8 +112,27 @@ const socialImageURL = new URL(
 
     <ClientRouter />
 
+    <slot name="head" />
+
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      })();
+
+      document.documentElement.setAttribute("data-theme", theme);
+
+      document.addEventListener("astro:after-swap", () => {
+        const currentTheme = localStorage.getItem("theme")
+          || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", currentTheme);
+      });
+    </script>
+
     <ImageZoomer client:only="react" />
-    <script is:inline src="/toggle-theme.js"></script>
+    <script defer is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
     <slot />
