@@ -1,4 +1,4 @@
-import { GISCUS } from "@config";
+import { GISCUS, SITE } from "@config";
 import Giscus, { type Theme } from "@giscus/react";
 import { useEffect, useState } from "react";
 
@@ -9,7 +9,9 @@ interface CommentsProps {
 
 export default function Comments({
   lightTheme = "light",
-  darkTheme = "https://blog.cloudti.de/comments.css",
+  darkTheme = import.meta.env.DEV
+    ? `${window.location.origin}/comments.css`
+    : `${SITE.website}/comments.css`,
 }: CommentsProps) {
   const [theme, setTheme] = useState(() => {
     const currentTheme = localStorage.getItem("theme");
