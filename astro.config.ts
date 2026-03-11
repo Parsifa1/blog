@@ -38,6 +38,9 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex, rehypeFigure],
   },
   vite: {
+    server: {
+      cors: true,
+    },
     ssr: {
       external: ["@myriaddreamin/typst-ts-node-compiler"],
     },
@@ -46,4 +49,7 @@ export default defineConfig({
     },
   },
   scopedStyleStrategy: "where",
+  security: {
+    allowedDomains: [{ hostname: "giscus.app" }],
+  },
 });
