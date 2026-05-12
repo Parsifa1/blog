@@ -1,0 +1,280 @@
+---
+interface RouteTabImageLike {
+  src: string;
+}
+
+interface RouteTabItem {
+  id: string;
+  label: string;
+  image?: string | RouteTabImageLike;
+  imageAlt?: string;
+}
+
+interface RouteTabOverlay {
+  right?: string;
+  width?: string;
+  height?: string;
+  rightLg?: string;
+  widthLg?: string;
+  heightLg?: string;
+  rightMd?: string;
+  widthMd?: string;
+  heightMd?: string;
+}
+
+export interface Props {
+  routes: RouteTabItem[];
+  defaultRoute?: string;
+  name?: string;
+  overlay?: RouteTabOverlay;
+}
+
+const { defaultRoute, name, overlay, routes } = Astro.props;
+
+const sanitize = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "route";
+
+const groupName = sanitize(
+  name ?? `route-tabs-${routes.map(({ id }) => id).join("-")}`,
+);
+
+const resolveImageSrc = (image?: string | RouteTabImageLike) => {
+  if (!image) return undefined;
+  return typeof image === "string" ? image : image.src;
+};
+
+const overlayDefaults = {
+  right: "0.5rem",
+  width: "23.8rem",
+  height: "35.7rem",
+  rightLg: "0.5rem",
+  widthLg: "20.4rem",
+  heightLg: "30.6rem",
+  rightMd: "0.5rem",
+  widthMd: "13.6rem",
+  heightMd: "20.4rem",
+} satisfies Required<RouteTabOverlay>;
+
+const panels = await Promise.all(
+  routes.map(async (route, index) => {
+    const safeId = sanitize(route.id || `route-${index + 1}`);
+
+    return {
+      ...route,
+      safeId,
+      inputId: `${groupName}-${safeId}`,
+      imageSrc: resolveImageSrc(route.image),
+      html: await Astro.slots.render(route.id),
+    };
+  }),
+);
+
+const selectedRouteId = defaultRoute && routes.some(route => route.id === defaultRoute)
+  ? defaultRoute
+  : undefined;
+
+const overlayStyle = overlay
+  ? Object.entries({
+    "--route-tabs-overlay-right": overlay.right ?? overlayDefaults.right,
+    "--route-tabs-overlay-width": overlay.width ?? overlayDefaults.width,
+    "--route-tabs-overlay-height": overlay.height ?? overlayDefaults.height,
+    "--route-tabs-overlay-right-lg": overlay.rightLg ?? overlayDefaults.rightLg,
+    "--route-tabs-overlay-width-lg": overlay.widthLg ?? overlayDefaults.widthLg,
+    "--route-tabs-overlay-height-lg": overlay.heightLg ?? overlayDefaults.heightLg,
+    "--route-tabs-overlay-right-md": overlay.rightMd ?? overlayDefaults.rightMd,
+    "--route-tabs-overlay-width-md": overlay.widthMd ?? overlayDefaults.widthMd,
+    "--route-tabs-overlay-height-md": overlay.heightMd ?? overlayDefaults.heightMd,
+  })
+    .map(([name, value]) => `${name}: ${value}`)
+    .join("; ")
+  : undefined;
+
+const stateStyles = panels
+  .map(({ inputId, safeId }) => `
+#${inputId}:checked ~ .route-tabs__controls label[for="${inputId}"] {
+  color: rgb(var(--color-accent));
+  text-decoration-color: rgb(var(--color-accent));
+}
+#${inputId}:checked ~ .route-tabs__surface {
+  display: block;
+}
+#${inputId}:checked ~ .route-tabs__surface [data-route-panel="${safeId}"] {
+  display: block;
+}
+#${inputId}:checked ~ .route-tabs__surface [data-route-art="${safeId}"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+`)
+  .join("\n");
+---
+
+<div class:list={["route-tabs", overlay && "route-tabs--overlay"]} style={overlayStyle}>
+  {
+    panels.map(route => (
+      <input
+        id={route.inputId}
+        class="route-tabs__input"
+        type="radio"
+        name={groupName}
+        checked={route.id === selectedRouteId}
+      />
+    ))
+  }
+
+  <div class="route-tabs__controls not-prose" role="tablist" aria-label="线路切换">
+    {
+      panels.map(route => (
+        <label for={route.inputId} class="route-tabs__control" role="tab">
+          {route.label}
+        </label>
+      ))
+    }
+  </div>
+
+  <div class="route-tabs__surface">
+    <div class="route-tabs__artworks not-prose" aria-hidden="true">
+      {
+        panels.map(route => (
+          <div class="route-tabs__artwork" data-route-art={route.safeId}>
+            {
+              route.imageSrc && (
+                <img
+                  src={route.imageSrc}
+                  alt={route.imageAlt ?? `${route.label}立绘`}
+                  loading="lazy"
+                  class="route-tabs__artwork-image"
+                />
+              )
+            }
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="route-tabs__panels">
+      {
+        panels.map(route => (
+          <section class="route-tabs__panel" data-route-panel={route.safeId}>
+            <Fragment set:html={route.html} />
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style is:inline set:html={stateStyles}></style>
+
+<style>
+  .route-tabs {
+    @apply relative overflow-visible;
+  }
+
+  .route-tabs__input {
+    @apply absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .route-tabs__controls {
+    @apply relative z-[2] flex flex-wrap gap-[2.1rem] pb-4;
+    scrollbar-width: none;
+  }
+
+  .route-tabs__controls::-webkit-scrollbar {
+    display: none;
+  }
+
+  .route-tabs__control {
+    @apply inline-flex min-h-[2.45rem] items-center text-[1.3rem] font-bold leading-[1.1] tracking-[0.01em]
+      text-skin-base underline decoration-dashed decoration-[2px] underline-offset-[0.28rem]
+      transition-[color,text-decoration-color] duration-200 hover:text-skin-accent;
+    text-decoration-color: rgba(var(--color-text-base), 0.92);
+  }
+
+  .route-tabs__surface {
+    @apply relative hidden min-h-[20rem] overflow-visible p-0;
+  }
+
+  .route-tabs__artworks {
+    @apply pointer-events-none absolute bottom-0 right-1 z-0 h-[22rem] w-[min(18rem,32%)] overflow-visible;
+  }
+
+  .route-tabs--overlay .route-tabs__artworks {
+    position: fixed;
+    left: calc((100vw - min(100vw, 56rem)) / 2 + min(100vw, 56rem) - 1rem);
+    right: auto;
+    bottom: 1.5rem;
+    width: var(--route-tabs-overlay-width);
+    height: var(--route-tabs-overlay-height);
+    z-index: 5;
+  }
+
+  .route-tabs__artwork {
+    @apply absolute inset-0 opacity-0 transition-[opacity,transform] duration-[260ms];
+    transform: translate3d(1rem, 0, 0);
+  }
+
+  .route-tabs__artwork-image {
+    @apply absolute inset-0 h-full w-full object-contain object-right-bottom;
+    filter: saturate(1.02);
+  }
+
+  .route-tabs__panels {
+    @apply relative z-[1] w-[min(100%,42rem)] list-none bg-skin-fill;
+  }
+
+  .route-tabs__panel {
+    @apply m-0 hidden list-none p-0;
+  }
+
+  .route-tabs__panel :global(:first-child) {
+    margin-top: 0;
+  }
+
+  .route-tabs__panel :global(ul),
+  .route-tabs__panel :global(ol) {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .route-tabs__panel :global(li)::marker {
+    content: "";
+  }
+
+  @media (max-width: 1300px) {
+    .route-tabs__surface {
+      @apply min-h-0;
+    }
+
+    .route-tabs__artworks {
+      @apply hidden;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .route-tabs__controls {
+      @apply gap-3 overflow-x-auto pb-[0.85rem];
+    }
+
+    .route-tabs__control {
+      @apply min-h-[2.08rem] shrink-0 text-[1.02rem] underline-offset-[0.24rem];
+    }
+
+    .route-tabs__surface {
+      @apply min-h-4;
+    }
+
+    .route-tabs__artworks {
+      @apply bottom-0 right-1 block h-[15rem] w-[13rem];
+    }
+
+    .route-tabs__panels {
+      @apply w-full;
+    }
+  }
+</style>

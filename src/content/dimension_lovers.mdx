@@ -1,0 +1,70 @@
+---
+title:  ディメンション凸ラバース！！推后感想
+tags:
+  - review
+author: Parsifal
+description: 我好想入月乃樱......
+# modDatetime: 2026-05-13T04:07:30Z
+pubDatetime: 2026-05-13T04:07:22Z
+---
+import sakura from "./assets/images/dimension_lovers/sukura.png";
+import hanan from "./assets/images/dimension_lovers/katan.png";
+import sophia from "./assets/images/dimension_lovers/sofia.png";
+import suisen from "./assets/images/dimension_lovers/suisen.png";
+import RouteTabs from "@components/RouteTabs.astro";
+
+export const heroineRoutes = [
+  {
+    id: "sakura",
+    label: "夜乃桜",
+    image: sakura,
+    imageAlt: "夜乃桜立绘",
+  },
+  {
+    id: "hanan",
+    label: "華淡",
+    image: hanan,
+    imageAlt: "華淡立绘",
+  },
+  {
+    id: "sophia",
+    label: "ソフィア",
+    image: sophia,
+    imageAlt: "ソフィア立绘",
+  },
+  {
+    id: "suisen",
+    label: "水仙",
+    image: suisen,
+    imageAlt: "水仙立绘",
+  },
+];
+
+
+## 共通线
+
+
+## 女主角
+
+
+<RouteTabs name="dimension-lovers-routes" routes={heroineRoutes} overlay={{}} >
+<section slot="sakura">
+## 测试
+你是谁
+*测试*
+
+</section>
+
+<section slot="hanan">
+测试
+</section>
+
+<section slot="sophia">
+测试
+</section>
+
+<section slot="suisen">
+测试
+</section>
+</RouteTabs>
+
