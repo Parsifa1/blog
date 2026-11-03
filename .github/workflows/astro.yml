@@ -4,6 +4,8 @@ on:
   push:
     branches: ["master"]
   workflow_dispatch:
+  repository_dispatch:
+    types: [notion_update]
 
 permissions:
   contents: read
@@ -40,7 +42,9 @@ jobs:
 
       - name: Build with Astro
         run: pnpm astro build
-
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:

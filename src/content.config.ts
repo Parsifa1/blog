@@ -1,9 +1,28 @@
+import "dotenv/config";
 import { SITE } from "@config";
 import { glob } from "astro/loaders";
+import type { Loader, LoaderContext } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
+import { notionLoader } from "./utils/notionLoader";
 
+function compositeLoader(loaders: Loader[]): Loader {
+  return {
+    name: "composite-loader",
+    load: async (context: LoaderContext): Promise<void> => {
+      for (const loader of loaders) {
+        await loader.load(context);
+      }
+    },
+  };
+}
+
+const localLoader = glob({ pattern: ["**.md", "**.mdx", "**.typ"], base: "./src/content" });
+const loaders: Loader[] = [localLoader];
+if (process.env.NOTION_TOKEN && process.env.NOTION_DATABASE_ID) {
+  loaders.push(notionLoader());
+}
 const blog = defineCollection({
-  loader: glob({ pattern: ["**.md", "**.mdx", "**.typ"], base: "./src/content" }),
+  loader: loaders.length > 1 ? compositeLoader(loaders) : localLoader,
   schema: ({ image }) =>
     z.object({
       title: z.string(),
