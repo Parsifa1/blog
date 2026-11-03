@@ -6,6 +6,7 @@ export interface Env {
   GITHUB_TOKEN?: string;
   GITHUB_REPO?: string;
   NOTION_TOKEN?: string;
+  NOTION_DATABASE_ID?: string;
 }
 
 interface CloudflareExecutionContext {
@@ -79,6 +80,63 @@ async function triggerGitHubDispatch(env: Env): Promise<Response> {
   );
 }
 
+async function checkAndSyncNotion(env: Env, ctx: CloudflareExecutionContext): Promise<void> {
+  const token = env.NOTION_TOKEN;
+  const dbId = env.NOTION_DATABASE_ID;
+  if (!token || !dbId) return;
+
+  const defaultCache = getDefaultCache();
+  const cacheKey = new Request("https://internal.cache/notion-last-edited-time");
+  let lastRecordedTime = "";
+
+  if (defaultCache) {
+    const cached = await defaultCache.match(cacheKey);
+    if (cached) {
+      lastRecordedTime = await cached.text();
+    }
+  }
+
+  const cleanDbId = dbId.replace(/-/g, "");
+  const formattedDbId = cleanDbId.length === 32
+    ? `${cleanDbId.slice(0, 8)}-${cleanDbId.slice(8, 12)}-${cleanDbId.slice(12, 16)}-${cleanDbId.slice(16, 20)}-${
+      cleanDbId.slice(20)
+    }`
+    : dbId;
+
+  const notionRes = await fetch(`https://api.notion.com/v1/databases/${formattedDbId}/query`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Notion-Version": "2022-06-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      page_size: 10,
+      sorts: [{ timestamp: "last_edited_time", direction: "descending" }],
+    }),
+  });
+
+  if (!notionRes.ok) return;
+
+  const data = await notionRes.json() as { results?: Array<{ last_edited_time: string }> };
+  if (!data.results || data.results.length === 0) return;
+
+  const latestTime = data.results[0].last_edited_time;
+  if (!latestTime) return;
+
+  if (lastRecordedTime && latestTime <= lastRecordedTime) {
+    return;
+  }
+
+  if (defaultCache) {
+    const responseToCache = new Response(latestTime, {
+      headers: { "Cache-Control": "public, max-age=2592000" },
+    });
+    ctx.waitUntil(defaultCache.put(cacheKey, responseToCache));
+  }
+
+  await triggerGitHubDispatch(env);
+}
 function getDefaultCache(): Cache | undefined {
   if (typeof caches !== "undefined" && "default" in caches) {
     const cacheStorage = caches as unknown as CloudflareCacheStorage;
@@ -158,6 +216,6 @@ export default {
   },
 
   async scheduled(_controller: ScheduledController, env: Env, ctx: CloudflareExecutionContext): Promise<void> {
-    ctx.waitUntil(triggerGitHubDispatch(env));
+    ctx.waitUntil(checkAndSyncNotion(env, ctx));
   },
 };

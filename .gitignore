@@ -22,6 +22,8 @@ pnpm-debug.log*
 # ignore .astro directory
 .astro
 
+# notion dynamic assets cache
+public/notion-assets/
 # yarn
 .yarn/*
 !.yarn/patches

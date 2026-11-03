@@ -1,12 +1,14 @@
 import { SITE } from "@config";
 import notionClientPkg from "@notionhq/client";
 import type { Loader, LoaderContext } from "astro/loaders";
+import { createHash } from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
 import n2mPkg from "notion-to-md";
 import { slugifyStr } from "./slugify";
 
 const { Client } = notionClientPkg;
 const { NotionToMarkdown } = n2mPkg;
-
 export interface NotionLoaderOptions {
   auth?: string;
   databaseId?: string;
@@ -166,6 +168,83 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
       const notion = new Client({ auth });
       const n2m = new NotionToMarkdown({ notionClient: notion });
 
+      n2m.setCustomTransformer("image", async (block: unknown) => {
+        if (!block || typeof block !== "object") return "";
+        const imageBlock = block as Record<string, unknown>;
+        const image = (imageBlock.image && typeof imageBlock.image === "object")
+          ? (imageBlock.image as Record<string, unknown>)
+          : undefined;
+        if (!image) return "";
+
+        const captionText = Array.isArray(image.caption)
+          ? extractPlainText(image.caption)
+          : "";
+
+        let sourceUrl = "";
+        if (image.type === "external") {
+          sourceUrl = image.external?.url || "";
+        } else if (image.type === "file") {
+          sourceUrl = image.file?.url || "";
+        }
+
+        if (!sourceUrl) return "";
+
+        let finalUrl = sourceUrl;
+        if (image.type === "file") {
+          try {
+            const assetsDir = path.resolve(process.cwd(), ".astro/notion-assets");
+            if (!fs.existsSync(assetsDir)) {
+              fs.mkdirSync(assetsDir, { recursive: true });
+            }
+            const blockId = typeof imageBlock.id === "string" ? imageBlock.id : sourceUrl;
+            const hash = createHash("md5").update(blockId).digest("hex").slice(0, 12);
+            let ext = ".jpg";
+            const cleanUrl = sourceUrl.split("?")[0];
+            const parsedExt = path.extname(cleanUrl);
+            if (parsedExt && parsedExt.length <= 5) {
+              ext = parsedExt;
+            }
+            const fileName = `${hash}${ext}`;
+            const localFilePath = path.join(assetsDir, fileName);
+
+            if (!fs.existsSync(localFilePath)) {
+              const res = await fetch(sourceUrl);
+              if (res.ok) {
+                const buffer = Buffer.from(await res.arrayBuffer());
+                fs.writeFileSync(localFilePath, buffer);
+              }
+            }
+            finalUrl = `/notion-assets/${fileName}`;
+          } catch (err) {
+            context.logger.warn(`Failed to cache Notion image: ${err instanceof Error ? err.message : String(err)}`);
+          }
+        }
+
+        let explicitWidth = "";
+        let cleanCaption = captionText;
+
+        const sizeMatch = captionText.match(/\|(?:w=)?(\d+(?:px|%)?)\s*$/i)
+          || captionText.match(/\b(?:width|w)=(\d+(?:px|%)?)\b/i);
+        if (sizeMatch) {
+          explicitWidth = sizeMatch[1];
+          if (!explicitWidth.endsWith("%") && !explicitWidth.endsWith("px")) {
+            explicitWidth += "px";
+          }
+          cleanCaption = captionText
+            .replace(/\|(?:w=)?(\d+(?:px|%)?)\s*$/i, "")
+            .replace(/\b(?:width|w)=(\d+(?:px|%)?)\b/i, "")
+            .trim();
+        }
+
+        if (explicitWidth) {
+          const captionHtml = cleanCaption
+            ? `<figcaption class="text-center">${cleanCaption}</figcaption>`
+            : "";
+          return `<figure class="flex flex-col items-center my-4"><img src="${finalUrl}" alt="${cleanCaption}" style="width: ${explicitWidth}; max-width: 100%; height: auto;" />${captionHtml}</figure>`;
+        }
+
+        return `![${cleanCaption}](${finalUrl})`;
+      });
       try {
         const pages = await fetchNotionPages(notion, databaseId);
 
@@ -200,8 +279,56 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
           const rawOgImage = extractPropertyValue(getProp("ogimage")) as string | undefined;
 
           const mdBlocks = await n2m.pageToMarkdown(page.id);
-          const mdString = n2m.toMarkdownString(mdBlocks).parent;
+          const annotations: Array<{
+            id: string;
+            index: number;
+            author?: string;
+            time: string;
+            content: string;
+          }> = [];
 
+          let annotationIndex = 1;
+          for (const block of mdBlocks) {
+            if (!block.blockId || !block.parent) continue;
+            try {
+              const commentRes = await notion.comments.list({ block_id: block.blockId });
+              if (commentRes.results && commentRes.results.length > 0) {
+                for (const comment of commentRes.results) {
+                  const commentText = extractPlainText(comment.rich_text);
+                  if (!commentText) continue;
+                  const createdTime = new Date(comment.created_time);
+                  const month = String(createdTime.getMonth() + 1).padStart(2, "0");
+                  const day = String(createdTime.getDate()).padStart(2, "0");
+                  const hours = String(createdTime.getHours()).padStart(2, "0");
+                  const minutes = String(createdTime.getMinutes()).padStart(2, "0");
+                  const timeStr = `${month}-${day} ${hours}:${minutes}`;
+
+                  annotations.push({
+                    id: comment.id,
+                    index: annotationIndex,
+                    author: (comment.display_name?.type === "user" && comment.display_name.resolved_name)
+                      ? comment.display_name.resolved_name
+                      : undefined,
+                    time: timeStr,
+                    content: commentText,
+                  });
+
+                  const anchorId = `note-${annotationIndex}`;
+                  const markId = `mark-${annotationIndex}`;
+                  const normalizedParent = (block.parent || "").replace(/\n\n+/g, "<br /><br />").replace(
+                    /\n/g,
+                    "<br />",
+                  );
+                  block.parent =
+                    `<span class="annotated-text" id="${markId}" data-target="${anchorId}">${normalizedParent}<sup class="note-badge">[${annotationIndex}]</sup></span>`;
+                  annotationIndex++;
+                }
+              }
+            } catch {
+            }
+          }
+
+          const mdString = n2m.toMarkdownString(mdBlocks).parent;
           let description = rawDesc;
           if (!description) {
             const cleanText = mdString.replace(/[#*`_~[\]()>\n\r]/g, " ").replace(/\s+/g, " ").trim();
@@ -231,6 +358,7 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
               draft,
               featured,
               ...(rawOgImage ? { ogImage: rawOgImage } : {}),
+              annotations: annotations.length > 0 ? annotations : undefined,
             },
             body: mdString,
             rendered,

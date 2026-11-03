@@ -5,15 +5,49 @@ import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import rehypeFigure from "@microflash/rehype-figure";
 import remarkFigure from "@microflash/remark-figure-caption";
+import type { AstroIntegration } from "astro";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import { typst } from "astro-typst";
 import { defineConfig } from "astro/config";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkToc from "remark-toc";
 import { SITE } from "./src/config";
+
+function notionAssetsIntegration(): AstroIntegration {
+  const cacheDir = path.resolve(process.cwd(), ".astro/notion-assets");
+  return {
+    name: "notion-assets-integration",
+    hooks: {
+      "astro:server:setup": ({ server }) => {
+        server.middlewares.use((req, res, next) => {
+          if (req.url && req.url.startsWith("/notion-assets/")) {
+            const fileName = path.basename(req.url.split("?")[0]);
+            const filePath = path.join(cacheDir, fileName);
+            if (fs.existsSync(filePath)) {
+              res.setHeader("Content-Type", "image/jpeg");
+              res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+              return fs.createReadStream(filePath).pipe(res);
+            }
+          }
+          next();
+        });
+      },
+      "astro:build:done": ({ dir }) => {
+        if (fs.existsSync(cacheDir)) {
+          const outDir = path.join(fileURLToPath(dir), "notion-assets");
+          fs.cpSync(cacheDir, outDir, { recursive: true });
+        }
+      },
+    },
+  };
+}
+
 export default defineConfig({
   site: SITE.website,
   integrations: [
@@ -30,6 +64,7 @@ export default defineConfig({
     mdx(),
     typst({ options: { remPx: 14 }, target: "svg" }),
     icon({ iconDir: "src/assets/icons" }),
+    notionAssetsIntegration(),
   ],
   markdown: {
     remarkPlugins: [remarkMath, remarkGfm, [remarkToc, { heading: "目录" }], [remarkFigure, {

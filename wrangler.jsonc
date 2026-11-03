@@ -7,6 +7,6 @@
     "not_found_handling": "404-page",
   },
   "triggers": {
-    "crons": ["0 16 * * *"],
+    "crons": ["*/10 * * * *"],
   },
 }

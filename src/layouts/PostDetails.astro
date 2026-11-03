@@ -27,8 +27,8 @@ const {
   canonicalURL,
   pubDatetime,
   modDatetime,
+  annotations,
 } = post.data;
-
 const { Content } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
@@ -70,9 +70,43 @@ const layoutProps = {
       size="lg"
       className="my-2"
     />
-    <article id="article" role="article" class="prose mx-auto mt-8 max-w-4xl">
-      <Content />
-    </article>
+    <div class="post-layout-container relative">
+      <article id="article" role="article" class="prose mx-auto mt-8 max-w-4xl">
+        <Content />
+      </article>
+
+      {
+        annotations && annotations.length > 0 && (
+          <>
+            <aside class="annotations-sidebar" aria-label="Margin Notes">
+              {
+                annotations.map(note => (
+                  <div
+                    class="margin-note"
+                    id={`note-${note.index}`}
+                    data-target={`mark-${note.index}`}
+                  >
+                    <div class="margin-note-header">
+                      <span class="margin-note-num">[{note.index}]</span>
+                      <span class="margin-note-time">{note.time}</span>
+                    </div>
+                    <div class="margin-note-content">{note.content}</div>
+                  </div>
+                ))
+              }
+            </aside>
+
+            <div id="mobile-inline-note" class="mobile-inline-note">
+              <div class="mobile-inline-note-header">
+                <span id="mobile-inline-note-num" class="mobile-inline-note-num"></span>
+                <span id="mobile-inline-note-time" class="mobile-inline-note-time"></span>
+              </div>
+              <div id="mobile-inline-note-body" class="mobile-inline-note-body"></div>
+            </div>
+          </>
+        )
+      }
+    </div>
 
     <ul class="my-8"></ul>
 
@@ -98,6 +132,130 @@ const layoutProps = {
   }
   .post-title {
     @apply text-2xl font-semibold text-skin-accent;
+  }
+
+  .post-layout-container {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Notion 边注样式 (Doop 设计还原) */
+  :global(.annotated-text) {
+    border-bottom: 1px dashed rgb(var(--color-accent));
+    padding-bottom: 1px;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    user-select: none;
+  }
+  :global(.annotated-text:hover),
+  :global(.annotated-text.active) {
+    color: rgb(var(--color-accent));
+  }
+  :global(.note-badge) {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgb(var(--color-accent));
+    margin-left: 3px;
+    vertical-align: 4px;
+    cursor: pointer;
+  }
+
+  .annotations-sidebar {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: calc(100% + 1.5rem);
+    width: 260px;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  @media (min-width: 1280px) {
+    .annotations-sidebar {
+      display: block;
+    }
+  }
+  .margin-note {
+    position: absolute;
+    width: 100%;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: rgb(var(--color-text-base));
+    opacity: 0.9;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    pointer-events: auto;
+    padding: 8px 10px;
+    border-left: 2px solid transparent;
+  }
+
+  .margin-note.active,
+  .margin-note:hover {
+    opacity: 1;
+    transform: translateX(4px);
+    border-left-color: rgb(var(--color-accent));
+  }
+  .margin-note-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+    font-family: monospace;
+    font-size: 0.75rem;
+  }
+
+  .margin-note-num {
+    color: rgb(var(--color-accent));
+    font-weight: 600;
+  }
+
+  .margin-note-time {
+    color: rgb(var(--color-text-base));
+    opacity: 0.75;
+    font-size: 0.7rem;
+  }
+  .margin-note-content {
+    color: rgb(var(--color-text-base));
+    opacity: 1;
+    word-break: break-word;
+  }
+
+  /* 移动端就地折叠展开卡片 (自然融入正文，无突兀 padding 与高对比度边框) */
+  .mobile-inline-note {
+    display: none;
+    margin: 10px 0 16px 0;
+    padding: 6px 0 6px 10px;
+    border-left: 2px solid rgb(var(--color-accent));
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .mobile-inline-note.show {
+    display: block;
+    opacity: 1;
+  }
+  .mobile-inline-note-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+    font-family: monospace;
+    font-size: 0.75rem;
+  }
+  .mobile-inline-note-num {
+    color: rgb(var(--color-accent));
+    font-weight: 600;
+  }
+  .mobile-inline-note-time {
+    color: rgb(var(--color-text-base));
+    opacity: 0.75;
+    font-size: 0.7rem;
+  }
+  .mobile-inline-note-body {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgb(var(--color-text-base));
   }
 </style>
 
@@ -157,6 +315,97 @@ const layoutProps = {
   }
   addHeadingLinks();
 
+  /** Align margin notes with annotated text and handle hover sync */
+  function setupAnnotations() {
+    const marks = Array.from(document.querySelectorAll(".annotated-text"));
+    const notes = Array.from(document.querySelectorAll(".margin-note"));
+    const container = document.querySelector(".post-layout-container");
+    if (!container || marks.length === 0 || notes.length === 0) return;
+
+    function alignPositions() {
+      const containerRect = container.getBoundingClientRect();
+      let lastBottom = 0;
+
+      notes.forEach(note => {
+        const targetId = note.dataset.target;
+        if (!targetId) return;
+        const mark = document.getElementById(targetId);
+        if (!mark) return;
+
+        const markRect = mark.getBoundingClientRect();
+        let targetTop = markRect.top - containerRect.top;
+        if (targetTop < lastBottom + 12) {
+          targetTop = lastBottom + 12;
+        }
+
+        note.style.top = `${targetTop}px`;
+        lastBottom = targetTop + note.offsetHeight;
+      });
+    }
+
+    alignPositions();
+    window.addEventListener("resize", alignPositions);
+
+    marks.forEach(mark => {
+      const targetId = mark.dataset.target;
+      if (!targetId) return;
+      const note = document.getElementById(targetId);
+      if (!note) return;
+      const setActive = active => {
+        mark.classList.toggle("active", active);
+        note.classList.toggle("active", active);
+      };
+      mark.addEventListener("mouseenter", () => setActive(true));
+      mark.addEventListener("mouseleave", () => setActive(false));
+      note.addEventListener("mouseenter", () => setActive(true));
+      note.addEventListener("mouseleave", () => setActive(false));
+
+      mark.addEventListener("click", e => {
+        e.stopPropagation();
+        if (window.innerWidth < 1280) {
+          const content = note.querySelector(".margin-note-content")?.textContent || "";
+          const time = note.querySelector(".margin-note-time")?.textContent || "";
+          const num = note.querySelector(".margin-note-num")?.textContent || "";
+
+          const inlineNote = document.getElementById("mobile-inline-note");
+          const noteNum = document.getElementById("mobile-inline-note-num");
+          const noteTime = document.getElementById("mobile-inline-note-time");
+          const noteBody = document.getElementById("mobile-inline-note-body");
+
+          if (inlineNote && noteNum && noteTime && noteBody) {
+            const isCurrentOpen = inlineNote.classList.contains("show")
+              && inlineNote.dataset.currentMark === mark.id;
+            if (isCurrentOpen) {
+              inlineNote.classList.remove("show");
+              inlineNote.dataset.currentMark = "";
+              return;
+            }
+
+            noteNum.textContent = num;
+            noteTime.textContent = time;
+            noteBody.textContent = content;
+            inlineNote.dataset.currentMark = mark.id;
+
+            // 就地插入到当前被标注的段落/块级元素正下方
+            const parentBlock = mark.closest("p, li, blockquote, div") || mark;
+            parentBlock.insertAdjacentElement("afterend", inlineNote);
+            inlineNote.classList.add("show");
+          }
+        } else {
+          note.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+    });
+
+    document.addEventListener("click", () => {
+      const inlineNote = document.getElementById("mobile-inline-note");
+      if (inlineNote) {
+        inlineNote.classList.remove("show");
+        inlineNote.dataset.currentMark = "";
+      }
+    });
+  }
+  document.addEventListener("astro:page-load", setupAnnotations);
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
   function backToTop() {

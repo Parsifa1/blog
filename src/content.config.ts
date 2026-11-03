@@ -40,7 +40,17 @@ const blog = defineCollection({
         })
         .or(z.string())
         .optional(),
+      annotations: z
+        .array(
+          z.object({
+            id: z.string(),
+            index: z.number(),
+            author: z.string().optional(),
+            time: z.string(),
+            content: z.string(),
+          }),
+        )
+        .optional(),
     }),
 });
-
 export const collections = { blog };
