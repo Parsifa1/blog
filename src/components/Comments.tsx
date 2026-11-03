@@ -9,9 +9,7 @@ interface CommentsProps {
 
 export default function Comments({
   lightTheme = "light",
-  darkTheme = import.meta.env.DEV
-    ? `${window.location.origin}/comments.css`
-    : `${SITE.website}/comments.css`,
+  darkTheme = `${SITE.website}/comments.css`,
 }: CommentsProps) {
   const [theme, setTheme] = useState(() => {
     const currentTheme = localStorage.getItem("theme");
