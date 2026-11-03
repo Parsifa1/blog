@@ -2,10 +2,10 @@ import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import rehypeFigure from "@microflash/rehype-figure";
 import remarkFigure from "@microflash/remark-figure-caption";
+import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
@@ -52,7 +52,6 @@ function notionAssetsIntegration(): AstroIntegration {
 export default defineConfig({
   site: SITE.website,
   integrations: [
-    tailwind({ applyBaseStyles: false }),
     react(),
     sitemap(),
     expressiveCode({
@@ -79,6 +78,7 @@ export default defineConfig({
     }),
   },
   vite: {
+    plugins: [tailwindcss()],
     server: {
       cors: true,
     },

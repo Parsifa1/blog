@@ -12,11 +12,13 @@ import Menu from "@assets/icons/menu.svg";
 </button>
 
 <style>
+  @reference "@styles/base.css";
+
   svg {
     @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   .hamburger-menu svg {
-    @apply h-6 w-6 scale-125 fill-skin-base;
+    @apply block h-6 w-6 scale-125 fill-skin-base;
   }
   .hamburger-menu {
     @apply self-end p-2 sm:hidden;
