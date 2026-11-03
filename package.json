@@ -67,7 +67,8 @@
     "oxlint": "^1.19.0",
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.14"
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "wrangler": "4.65.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx,json,astro}": ["dprint fmt --allow-no-files"]

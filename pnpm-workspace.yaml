@@ -3,3 +3,4 @@ allowBuilds:
   esbuild: true
   less: true
   sharp: true
+  workerd: true
