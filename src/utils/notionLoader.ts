@@ -363,6 +363,11 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
           }
 
           const mdBlocks = await n2m.blocksToMarkdown(blockChildrenRes.results);
+          for (const mdBlock of mdBlocks) {
+            if (mdBlock.type !== "code" && mdBlock.parent) {
+              mdBlock.parent = mdBlock.parent.replace(/([^\n])\n([^\n])/g, "$1  \n$2");
+            }
+          }
           const mdString = n2m.toMarkdownString(mdBlocks).parent;
           let description = rawDesc;
           if (!description) {
