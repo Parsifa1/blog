@@ -139,15 +139,12 @@ const layoutProps = {
     width: 100%;
   }
 
-  /* Notion 边注样式 (Doop 设计还原) */
+  /* Notion margin note styles */
   :global(.annotated-text) {
-    border-bottom: 1px dashed rgb(var(--color-accent));
-    padding-bottom: 1px;
     cursor: pointer;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    transition: color 0.2s ease;
     user-select: none;
   }
-  :global(.annotated-text:hover),
   :global(.annotated-text.active) {
     color: rgb(var(--color-accent));
   }
@@ -221,7 +218,7 @@ const layoutProps = {
     word-break: break-word;
   }
 
-  /* 移动端就地折叠展开卡片 (自然融入正文，无突兀 padding 与高对比度边框) */
+  /* Inline collapsible card for smaller screens */
   .mobile-inline-note {
     display: none;
     margin: 10px 0 16px 0;
@@ -378,15 +375,23 @@ const layoutProps = {
             if (isCurrentOpen) {
               inlineNote.classList.remove("show");
               inlineNote.dataset.currentMark = "";
+              mark.classList.remove("active");
+              note.classList.remove("active");
               return;
             }
+
+            // Toggle active highlight styles
+            marks.forEach(m => m.classList.remove("active"));
+            notes.forEach(n => n.classList.remove("active"));
+            mark.classList.add("active");
+            note.classList.add("active");
 
             noteNum.textContent = num;
             noteTime.textContent = time;
             noteBody.textContent = content;
             inlineNote.dataset.currentMark = mark.id;
 
-            // 就地插入到当前被标注的段落/块级元素正下方
+            // Insert inline note card immediately below current annotated block
             const parentBlock = mark.closest("p, li, blockquote, div") || mark;
             parentBlock.insertAdjacentElement("afterend", inlineNote);
             inlineNote.classList.add("show");
@@ -397,15 +402,23 @@ const layoutProps = {
       });
     });
 
-    document.addEventListener("click", () => {
+    const handleOutsideClick = (e) => {
       const inlineNote = document.getElementById("mobile-inline-note");
-      if (inlineNote) {
+      if (inlineNote && !inlineNote.contains(e.target) && !e.target.closest(".annotated-text")) {
         inlineNote.classList.remove("show");
         inlineNote.dataset.currentMark = "";
+        marks.forEach(m => m.classList.remove("active"));
+        notes.forEach(n => n.classList.remove("active"));
       }
-    });
+    };
+    document.addEventListener("click", handleOutsideClick);
+    document.addEventListener("astro:before-swap", () => {
+      document.removeEventListener("click", handleOutsideClick);
+      window.removeEventListener("resize", alignPositions);
+    }, { once: true });
   }
-  document.addEventListener("astro:page-load", setupAnnotations);
+  setupAnnotations();
+
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
   function backToTop() {

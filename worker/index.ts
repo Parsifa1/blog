@@ -80,20 +80,22 @@ async function triggerGitHubDispatch(env: Env): Promise<Response> {
   );
 }
 
-async function checkAndSyncNotion(env: Env, ctx: CloudflareExecutionContext): Promise<void> {
+async function checkAndSyncNotion(env: Env, _ctx: CloudflareExecutionContext): Promise<void> {
   const token = env.NOTION_TOKEN;
   const dbId = env.NOTION_DATABASE_ID;
   if (!token || !dbId) return;
 
-  const defaultCache = getDefaultCache();
-  const cacheKey = new Request("https://internal.cache/notion-last-edited-time");
-  let lastRecordedTime = "";
-
-  if (defaultCache) {
-    const cached = await defaultCache.match(cacheKey);
-    if (cached) {
-      lastRecordedTime = await cached.text();
+  let deployedLatestTime = 0;
+  try {
+    const rssRes = await env.ASSETS.fetch(new Request("https://assets.local/rss.xml"));
+    if (rssRes.ok) {
+      const xml = await rssRes.text();
+      const match = xml.match(/<pubDate>([^<]+)<\/pubDate>/);
+      if (match && match[1]) {
+        deployedLatestTime = new Date(match[1]).getTime();
+      }
     }
+  } catch {
   }
 
   const cleanDbId = dbId.replace(/-/g, "");
@@ -124,15 +126,9 @@ async function checkAndSyncNotion(env: Env, ctx: CloudflareExecutionContext): Pr
   const latestTime = data.results[0].last_edited_time;
   if (!latestTime) return;
 
-  if (lastRecordedTime && latestTime <= lastRecordedTime) {
+  const notionLatestTime = new Date(latestTime).getTime();
+  if (deployedLatestTime > 0 && notionLatestTime <= deployedLatestTime) {
     return;
-  }
-
-  if (defaultCache) {
-    const responseToCache = new Response(latestTime, {
-      headers: { "Cache-Control": "public, max-age=2592000" },
-    });
-    ctx.waitUntil(defaultCache.put(cacheKey, responseToCache));
   }
 
   await triggerGitHubDispatch(env);

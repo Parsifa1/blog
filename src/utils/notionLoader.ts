@@ -181,10 +181,11 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
           : "";
 
         let sourceUrl = "";
+        const imgObj = image as { external?: { url?: string }; file?: { url?: string } };
         if (image.type === "external") {
-          sourceUrl = image.external?.url || "";
+          sourceUrl = imgObj.external?.url || "";
         } else if (image.type === "file") {
-          sourceUrl = image.file?.url || "";
+          sourceUrl = imgObj.file?.url || "";
         }
 
         if (!sourceUrl) return "";
@@ -277,8 +278,7 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
           const rawFeatured = extractPropertyValue(getProp("featured")) as boolean | undefined;
           const rawAuthor = extractPropertyValue(getProp("author")) as string | undefined;
           const rawOgImage = extractPropertyValue(getProp("ogimage")) as string | undefined;
-
-          const mdBlocks = await n2m.pageToMarkdown(page.id);
+          const blockChildrenRes = await notion.blocks.children.list({ block_id: page.id });
           const annotations: Array<{
             id: string;
             index: number;
@@ -288,10 +288,20 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
           }> = [];
 
           let annotationIndex = 1;
-          for (const block of mdBlocks) {
-            if (!block.blockId || !block.parent) continue;
+
+          for (const rawBlock of blockChildrenRes.results) {
+            const blockObj = rawBlock as Record<string, unknown>;
+            const blockType = typeof blockObj.type === "string" ? blockObj.type : "";
+            const typePayload = (blockType && typeof blockObj[blockType] === "object")
+              ? (blockObj[blockType] as Record<string, unknown>)
+              : undefined;
+
+            if (!typePayload || !Array.isArray(typePayload.rich_text) || typePayload.rich_text.length === 0) {
+              continue;
+            }
+
             try {
-              const commentRes = await notion.comments.list({ block_id: block.blockId });
+              const commentRes = await notion.comments.list({ block_id: rawBlock.id });
               if (commentRes.results && commentRes.results.length > 0) {
                 for (const comment of commentRes.results) {
                   const commentText = extractPlainText(comment.rich_text);
@@ -315,12 +325,36 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
 
                   const anchorId = `note-${annotationIndex}`;
                   const markId = `mark-${annotationIndex}`;
-                  const normalizedParent = (block.parent || "").replace(/\n\n+/g, "<br /><br />").replace(
-                    /\n/g,
-                    "<br />",
-                  );
-                  block.parent =
-                    `<span class="annotated-text" id="${markId}" data-target="${anchorId}">${normalizedParent}<sup class="note-badge">[${annotationIndex}]</sup></span>`;
+
+                  const segments = typePayload.rich_text as Array<Record<string, unknown>>;
+                  let targetSegmentIndex = 0;
+                  if (segments.length === 3) {
+                    targetSegmentIndex = 1;
+                  } else if (segments.length > 1) {
+                    let minLen = Infinity;
+                    for (let i = 0; i < segments.length; i++) {
+                      const text = String(segments[i].plain_text || "");
+                      if (text.length > 0 && text.length < minLen && !text.includes("\n")) {
+                        minLen = text.length;
+                        targetSegmentIndex = i;
+                      }
+                    }
+                  }
+
+                  const targetSeg = segments[targetSegmentIndex];
+                  const segText = (targetSeg.text && typeof targetSeg.text === "object")
+                    ? (targetSeg.text as Record<string, unknown>)
+                    : undefined;
+
+                  const rawContent = String(segText?.content || targetSeg.plain_text || "");
+                  const wrappedContent =
+                    `<span class="annotated-text" id="${markId}" data-target="${anchorId}">${rawContent}<sup class="note-badge">[${annotationIndex}]</sup></span>`;
+
+                  if (segText) {
+                    segText.content = wrappedContent;
+                  }
+                  targetSeg.plain_text = wrappedContent;
+
                   annotationIndex++;
                 }
               }
@@ -328,6 +362,7 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
             }
           }
 
+          const mdBlocks = await n2m.blocksToMarkdown(blockChildrenRes.results);
           const mdString = n2m.toMarkdownString(mdBlocks).parent;
           let description = rawDesc;
           if (!description) {

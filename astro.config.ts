@@ -1,3 +1,4 @@
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -67,14 +68,27 @@ export default defineConfig({
     notionAssetsIntegration(),
   ],
   markdown: {
-    remarkPlugins: [remarkMath, remarkGfm, [remarkToc, { heading: "目录" }], [remarkFigure, {
-      captionClassName: "text-center",
-    }]],
-    rehypePlugins: [rehypeKatex, rehypeFigure],
+    processor: unified({
+      remarkPlugins: [
+        remarkMath,
+        remarkGfm,
+        [remarkToc, { heading: "目录" }],
+        [remarkFigure, { captionClassName: "text-center" }],
+      ],
+      rehypePlugins: [rehypeKatex, rehypeFigure],
+    }),
   },
   vite: {
     server: {
       cors: true,
+    },
+    build: {
+      rollupOptions: {
+        // @ts-ignore - Rolldown / Vite 7+ diagnostic checks option
+        checks: {
+          preferBuiltinFeature: false,
+        },
+      },
     },
     ssr: {
       external: ["@myriaddreamin/typst-ts-node-compiler"],

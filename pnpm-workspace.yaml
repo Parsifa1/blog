@@ -7,3 +7,4 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - miniflare@5.20261102.0-beta
   - wrangler@4.156.2
+  - astro@7.4.5
