@@ -135,10 +135,14 @@ const layoutProps = {
   .post-title {
     @apply text-2xl font-semibold text-skin-accent;
   }
-
   .post-layout-container {
     position: relative;
     width: 100%;
+  }
+
+  :global(svg.typst-doc) {
+    max-width: 100% !important;
+    height: auto !important;
   }
 
   /* Notion margin note styles */
