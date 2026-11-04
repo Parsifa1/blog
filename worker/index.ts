@@ -83,16 +83,29 @@ async function triggerGitHubDispatch(env: Env): Promise<Response> {
 async function checkAndSyncNotion(env: Env, _ctx: CloudflareExecutionContext): Promise<void> {
   const token = env.NOTION_TOKEN;
   const dbId = env.NOTION_DATABASE_ID;
-  if (!token || !dbId) return;
+  const repo = env.GITHUB_REPO;
+  const ghToken = env.GITHUB_TOKEN;
+  if (!token || !dbId || !repo || !ghToken) return;
 
-  let deployedLatestTime = 0;
+  let lastBuildCompletedTime = 0;
   try {
-    const rssRes = await env.ASSETS.fetch(new Request("https://assets.local/rss.xml"));
-    if (rssRes.ok) {
-      const xml = await rssRes.text();
-      const match = xml.match(/<pubDate>([^<]+)<\/pubDate>/);
-      if (match && match[1]) {
-        deployedLatestTime = new Date(match[1]).getTime();
+    const ghRunsRes = await fetch(
+      `https://api.github.com/repos/${repo}/actions/workflows/astro.yml/runs?status=completed&conclusion=success&per_page=1`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          Authorization: `Bearer ${ghToken}`,
+          "User-Agent": "Cloudflare-Worker-Notion-CMS",
+        },
+      },
+    );
+    if (ghRunsRes.ok) {
+      const runsData = (await ghRunsRes.json()) as {
+        workflow_runs?: Array<{ updated_at: string }>;
+      };
+      const lastRun = runsData.workflow_runs?.[0];
+      if (lastRun?.updated_at) {
+        lastBuildCompletedTime = new Date(lastRun.updated_at).getTime();
       }
     }
   } catch {
@@ -108,26 +121,27 @@ async function checkAndSyncNotion(env: Env, _ctx: CloudflareExecutionContext): P
   const notionRes = await fetch(`https://api.notion.com/v1/databases/${formattedDbId}/query`, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       "Notion-Version": "2022-06-28",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      page_size: 10,
+      page_size: 5,
       sorts: [{ timestamp: "last_edited_time", direction: "descending" }],
     }),
   });
 
   if (!notionRes.ok) return;
 
-  const data = await notionRes.json() as { results?: Array<{ last_edited_time: string }> };
+  const data = (await notionRes.json()) as { results?: Array<{ last_edited_time: string }> };
   if (!data.results || data.results.length === 0) return;
 
   const latestTime = data.results[0].last_edited_time;
   if (!latestTime) return;
 
   const notionLatestTime = new Date(latestTime).getTime();
-  if (deployedLatestTime > 0 && notionLatestTime <= deployedLatestTime) {
+
+  if (lastBuildCompletedTime > 0 && notionLatestTime <= lastBuildCompletedTime) {
     return;
   }
 
