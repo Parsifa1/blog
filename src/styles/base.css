@@ -109,14 +109,6 @@
       stroke: rgb(var(--color-text-base));
     }
   }
-  #sun-svg,
-  html[data-theme="dark"] #moon-svg {
-    display: none;
-  }
-  #moon-svg,
-  html[data-theme="dark"] #sun-svg {
-    display: block;
-  }
   body {
     @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-lg
       text-skin-base selection:bg-skin-accent/70 selection:text-skin-inverted;

@@ -24,5 +24,13 @@ import Sun from "@assets/icons/sun.svg";
     #theme-btn svg {
       @apply scale-125 hover:rotate-12 hover:fill-skin-accent sm:scale-100;
     }
+    #sun-svg,
+    :global(html[data-theme="dark"]) #moon-svg {
+      display: none;
+    }
+    #moon-svg,
+    :global(html[data-theme="dark"]) #sun-svg {
+      display: block;
+    }
   </style>
 </button>
