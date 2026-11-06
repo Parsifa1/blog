@@ -2,10 +2,11 @@
 import Card from "@components/Card";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header/Header.astro";
-import { SITE } from "@config";
+import { LOCALE, SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import getPostsByGroupCondition from "@utils/getPostsByGroupCondition";
+import { zonedParts } from "@utils/zonedDate";
 import { getCollection } from "astro:content";
 // Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
@@ -33,7 +34,10 @@ const MonthMap: Record<string, string> = {
   <Main pageTitle="归档" pageDesc="所有归档的文章.">
     {
       Object.entries(
-        getPostsByGroupCondition(posts, post => new Date(post.data.pubDatetime).getFullYear()),
+        getPostsByGroupCondition(
+          posts,
+          post => zonedParts(new Date(post.data.pubDatetime), LOCALE.timeZone).year,
+        ),
       )
         .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
         .map(([year, yearGroup]) => (
@@ -44,7 +48,7 @@ const MonthMap: Record<string, string> = {
             Object.entries(
           getPostsByGroupCondition(
             yearGroup,
-            post => new Date(post.data.pubDatetime).getMonth() + 1,
+            post => zonedParts(new Date(post.data.pubDatetime), LOCALE.timeZone).month,
           ),
         )
           .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))

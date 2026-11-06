@@ -12,6 +12,7 @@
     "format:check": "dprint check",
     "format": "dprint fmt",
     "lint": "oxlint",
+    "check": "tsgo --noEmit -p tsconfig.json",
     "prepare": "husky"
   },
   "dependencies": {
@@ -55,6 +56,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^18.3.31",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "astro-expressive-code": "^0.44.3",
     "dotenv": "^18.0.9",
     "dprint": "^0.49.1",

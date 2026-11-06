@@ -42,6 +42,7 @@ jobs:
       - name: Build with Astro
         run: pnpm astro build
         env:
+          TZ: Asia/Shanghai
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
       - name: Deploy to Cloudflare Workers

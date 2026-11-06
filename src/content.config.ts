@@ -2,7 +2,8 @@ import "dotenv/config";
 import { SITE } from "@config";
 import { glob } from "astro/loaders";
 import type { Loader, LoaderContext } from "astro/loaders";
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import { notionLoader } from "./utils/notionLoader";
 
 function compositeLoader(loaders: Loader[]): Loader {

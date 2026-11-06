@@ -3,7 +3,7 @@
   (
     title: "typst插件测试",
     description: "test",
-    pubDatetime: "2025-01-03T17:38:04",
+    pubDatetime: "2025-01-03T09:38:04Z",
     desc: desc,
   ),
 )<frontmatter>

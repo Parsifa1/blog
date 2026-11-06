@@ -1,4 +1,4 @@
-import { SITE } from "@config";
+import { LOCALE, SITE } from "@config";
 import notionClientPkg from "@notionhq/client";
 import type { Loader, LoaderContext } from "astro/loaders";
 import { createHash } from "node:crypto";
@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import n2mPkg from "notion-to-md";
 import { slugifyStr } from "./slugify";
+import { zonedParts } from "./zonedDate";
 
 const { Client } = notionClientPkg;
 const { NotionToMarkdown } = n2mPkg;
@@ -307,11 +308,10 @@ export function notionLoader(options: NotionLoaderOptions = {}): Loader {
                   const commentText = extractPlainText(comment.rich_text);
                   if (!commentText) continue;
                   const createdTime = new Date(comment.created_time);
-                  const month = String(createdTime.getMonth() + 1).padStart(2, "0");
-                  const day = String(createdTime.getDate()).padStart(2, "0");
-                  const hours = String(createdTime.getHours()).padStart(2, "0");
-                  const minutes = String(createdTime.getMinutes()).padStart(2, "0");
-                  const timeStr = `${month}-${day} ${hours}:${minutes}`;
+                  const parts = zonedParts(createdTime, LOCALE.timeZone);
+                  const month = String(parts.month).padStart(2, "0");
+                  const day = String(parts.day).padStart(2, "0");
+                  const timeStr = `${month}-${day} ${parts.hour}:${parts.minute}`;
 
                   annotations.push({
                     id: comment.id,
