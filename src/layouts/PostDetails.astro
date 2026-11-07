@@ -5,6 +5,7 @@ import Datetime from "@components/Datetime";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header/Header.astro";
 import ShareLinks from "@components/ShareLinks.astro";
+import Tag from "@components/Tag.astro";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import { slugifyStr } from "@utils/slugify";
@@ -28,6 +29,7 @@ const {
   pubDatetime,
   modDatetime,
   annotations,
+  tags,
 } = post.data;
 const { Content } = await render(post);
 
@@ -108,9 +110,17 @@ const layoutProps = {
       }
     </div>
 
-    <ul class="my-8"></ul>
+    {
+      tags.length > 0 && (
+        <nav aria-label="文章标签">
+          <ul class="mt-6 flex flex-wrap gap-x-4 gap-y-2">
+            {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
+          </ul>
+        </nav>
+      )
+    }
 
-    <div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4">
+    <div class="mt-14 flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4">
       <button
         id="back-to-top"
         class="focus-outline whitespace-nowrap py-1 hover:opacity-75"

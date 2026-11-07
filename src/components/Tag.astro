@@ -1,44 +1,36 @@
 ---
+import IconHash from "@assets/icons/IconHash.svg";
+
 export interface Props {
   tag: string;
+  tagName?: string;
   size?: "sm" | "lg";
 }
 
-const { tag, size = "sm" } = Astro.props;
-import TagIcon from "@assets/icons/tag.svg";
+const { tag, tagName, size = "lg" } = Astro.props;
 ---
 
-<li class={`inline-block ${size === "sm" ? "my-1 underline-offset-4" : "my-3 mx-1 underline-offset-8"}`}>
+<li>
   <a
     href={`/tags/${tag}/`}
     transition:name={tag}
-    class={`${size === "sm" ? "text-sm" : "text-lg"} pr-2 group`}
+    class:list={[
+      "flex items-center gap-0.5",
+      "border-b-2 border-dashed border-skin-accent/70",
+      "transition-[color,border-color,translate] duration-150 ease-out",
+      "hover:-translate-y-0.5 hover:border-skin-accent hover:text-skin-accent",
+      "focus-visible:border-none focus-visible:text-skin-accent",
+      { "text-sm": size === "sm" },
+      { "text-lg": size === "lg" },
+    ]}
   >
-    <TagIcon
-      class={`${
-        size === "sm" ? " scale-75" : "scale-110"
-      } inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent`}
+    <IconHash
+      class:list={[
+        "opacity-80",
+        { "size-5": size === "lg" },
+        { "size-4": size === "sm" },
+      ]}
     />
-    &nbsp;<span>{tag}</span>
+    {tagName ?? tag}
   </a>
 </li>
-
-<style>
-  @reference "@styles/base.css";
-
-  a {
-    @apply relative !underline !decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1;
-  }
-  a svg {
-    @apply -mr-5 h-6 w-6 scale-95 text-skin-base opacity-80 group-hover:fill-skin-accent;
-  }
-  span {
-    @apply font-sans;
-  }
-  .scale-75 {
-    @apply fill-skin-base;
-  }
-  .scale-110 {
-    @apply fill-skin-base;
-  }
-</style>
