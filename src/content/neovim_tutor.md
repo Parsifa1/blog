@@ -10,8 +10,6 @@ tags:
   - neovim
 ---
 
-# 目录
-
 # Neovim 的前世今生
 
 ![Vim vs. Neovim](./assets/images/nvim_totual/nvim01.jpg)

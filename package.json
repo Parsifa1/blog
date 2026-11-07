@@ -43,7 +43,6 @@
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
-    "remark-toc": "^9.0.0",
     "satori": "^0.11.3",
     "sharp": "^0.34.5",
     "typescript": "^5.9.3"

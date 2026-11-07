@@ -10,8 +10,6 @@ modDatetime: 2025-02-25T01:14:45Z
 pubDatetime: 2025-02-19T23:30:32Z
 ---
 
-# 目录
-
 # 前情提要
 
 我有一个维护了很久的 `neovim` [配置](https://github.com/parsifa1/nvim)，大概有近 600 次 commit，我基本上没事闲着都在折腾这坨 `lua` 代码，使我几乎成了一个超级熟练的 `lua` 选手。

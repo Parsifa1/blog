@@ -18,9 +18,10 @@ import Menu from "@assets/icons/menu.svg";
     @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   .hamburger-menu svg {
-    @apply block h-6 w-6 scale-125 fill-skin-base;
+    @apply pointer-events-none block h-6 w-6 scale-125 fill-skin-base;
   }
   .hamburger-menu {
-    @apply self-end p-2 sm:hidden;
+    @apply relative z-20 self-end p-2 sm:hidden;
+    touch-action: manipulation;
   }
 </style>

@@ -129,17 +129,20 @@ const { activeNav } = Astro.props;
     lines?.forEach(l => l.classList.add("duration-300"));
   };
 
-  const toggleNav = (menuBtn: Element) => {
-    const menuIcon = menuBtn.querySelector(".menu-icon");
-    menuIcon?.querySelector(".top")?.classList.toggle("-rotate-45");
-    menuIcon?.querySelector(".mid")?.classList.toggle("scale-x-[0]");
-    menuIcon?.querySelector(".bot")?.classList.toggle("rotate-45");
+  const setNavState = (expanded: boolean) => {
+    const menuBtn = document.querySelector(".hamburger-menu");
+    const menuIcon = menuBtn?.querySelector(".menu-icon");
+    if (!menuBtn) return;
 
-    const expanded = menuBtn.getAttribute("aria-expanded") === "true";
-    menuIcon?.classList.toggle("is-active");
-    menuBtn.setAttribute("aria-expanded", expanded ? "false" : "true");
-    menuBtn.setAttribute("aria-label", expanded ? "Open Menu" : "Close Menu");
-    document.querySelector("#menu-items")?.classList.toggle("display-none");
+    menuBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+    menuBtn.setAttribute("aria-label", expanded ? "Close Menu" : "Open Menu");
+
+    menuIcon?.querySelector(".top")?.classList.toggle("-rotate-45", expanded);
+    menuIcon?.querySelector(".mid")?.classList.toggle("scale-x-[0]", expanded);
+    menuIcon?.querySelector(".bot")?.classList.toggle("rotate-45", expanded);
+    menuIcon?.classList.toggle("is-active", expanded);
+
+    document.querySelector("#menu-items")?.classList.toggle("display-none", !expanded);
   };
 
   menuIconClasses();
@@ -147,13 +150,13 @@ const { activeNav } = Astro.props;
   // Delegated so the handler survives view-transition swaps, including aborted ones.
   document.addEventListener("click", event => {
     const btn = (event.target as Element | null)?.closest(".hamburger-menu");
-    if (btn) toggleNav(btn);
+    if (!btn) return;
+    setNavState(btn.getAttribute("aria-expanded") !== "true");
   });
 
   document.addEventListener("astro:after-swap", () => {
     menuIconClasses();
-    document.querySelector("#menu-items")?.classList.add("display-none");
-    document.querySelector(".hamburger-menu")?.setAttribute("aria-expanded", "false");
+    setNavState(false);
   });
   document.addEventListener("astro:page-load", menuIconClasses);
 </script>

@@ -17,7 +17,6 @@ import { fileURLToPath } from "node:url";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import remarkToc from "remark-toc";
 import { SITE } from "./src/config";
 
 function notionAssetsIntegration(): AstroIntegration {
@@ -71,7 +70,6 @@ export default defineConfig({
       remarkPlugins: [
         remarkMath,
         remarkGfm,
-        [remarkToc, { heading: "目录" }],
         [remarkFigure, { captionClassName: "text-center" }],
       ],
       rehypePlugins: [rehypeKatex, rehypeFigure],
