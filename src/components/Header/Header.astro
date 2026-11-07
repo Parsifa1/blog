@@ -147,16 +147,22 @@ const { activeNav } = Astro.props;
 
   menuIconClasses();
 
-  // Delegated so the handler survives view-transition swaps, including aborted ones.
-  document.addEventListener("click", event => {
-    const btn = (event.target as Element | null)?.closest(".hamburger-menu");
-    if (!btn) return;
-    setNavState(btn.getAttribute("aria-expanded") !== "true");
-  });
+  // Astro dev re-runs this module on every HMR update; a second delegated
+  // listener would toggle the menu twice per click and leave it stuck.
+  const NAV_BOUND = "__navDelegationBound";
+  if (!(window as unknown as Record<string, unknown>)[NAV_BOUND]) {
+    (window as unknown as Record<string, unknown>)[NAV_BOUND] = true;
 
-  document.addEventListener("astro:after-swap", () => {
-    menuIconClasses();
-    setNavState(false);
-  });
-  document.addEventListener("astro:page-load", menuIconClasses);
+    document.addEventListener("click", event => {
+      const btn = (event.target as Element | null)?.closest(".hamburger-menu");
+      if (!btn) return;
+      setNavState(btn.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("astro:after-swap", () => {
+      menuIconClasses();
+      setNavState(false);
+    });
+    document.addEventListener("astro:page-load", menuIconClasses);
+  }
 </script>
