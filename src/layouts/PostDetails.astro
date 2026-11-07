@@ -4,6 +4,7 @@ import Comments from "@components/Comments";
 import Datetime from "@components/Datetime";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header/Header.astro";
+import PostToc from "@components/PostToc.astro";
 import ShareLinks from "@components/ShareLinks.astro";
 import Tag from "@components/Tag.astro";
 import { SITE } from "@config";
@@ -31,7 +32,7 @@ const {
   annotations,
   tags,
 } = post.data;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -73,6 +74,7 @@ const layoutProps = {
       className="my-2"
     />
     <div class="post-layout-container relative">
+      <PostToc {headings} />
       <article id="article" role="article" class="prose mx-auto mt-8 max-w-4xl">
         <Content />
       </article>
@@ -313,8 +315,10 @@ const layoutProps = {
   /** Attaches links to headings in the document,
    *  allowing sharing of sections easily */
   function addHeadingLinks() {
+    const article = document.querySelector("#article");
+    if (!article) return;
     const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6"),
+      article.querySelectorAll("h2, h3, h4, h5, h6"),
     );
     for (const heading of headings) {
       heading.classList.add("group");

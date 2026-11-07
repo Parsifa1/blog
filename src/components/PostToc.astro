@@ -1,0 +1,185 @@
+---
+import TocList from "@components/TocList.astro";
+import { buildTocTree, hasToc } from "@utils/buildTocTree";
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const items = buildTocTree(headings);
+---
+
+{
+  hasToc(headings) && (
+    <aside class="toc-side" data-pagefind-ignore>
+      <nav aria-labelledby="toc-side-label" data-toc-nav>
+        <h2 id="toc-side-label" class="toc-label">
+          目录
+        </h2>
+        <TocList {items} />
+      </nav>
+    </aside>
+  )
+}
+
+<script>
+  let cleanup: (() => void) | undefined;
+
+  function initToc() {
+    cleanup?.();
+    cleanup = undefined;
+
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-toc-nav] a[href^='#']"),
+    );
+    if (!links.length) return;
+
+    const headings = [
+      ...new Set(links.map(link => decodeURIComponent(link.hash.slice(1)))),
+    ]
+      .map(id => document.getElementById(id))
+      .filter((heading): heading is HTMLElement => heading !== null);
+
+    const READING_LINE = 96;
+    let activeId: string | null = null;
+    let frame = 0;
+
+    function update() {
+      frame = 0;
+      const maxScroll = document.documentElement.scrollHeight - innerHeight;
+      const atBottom = maxScroll > 0 && scrollY >= maxScroll - 2;
+
+      let current: HTMLElement | null = null;
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top > READING_LINE) break;
+        current = heading;
+      }
+      if (atBottom) current = headings[headings.length - 1] ?? current;
+
+      const id = current?.id ?? null;
+      if (id === activeId) return;
+      activeId = id;
+
+      for (const link of links) {
+        if (decodeURIComponent(link.hash.slice(1)) === id) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      }
+    }
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule);
+    update();
+
+    cleanup = () => {
+      removeEventListener("scroll", schedule);
+      removeEventListener("resize", schedule);
+      cancelAnimationFrame(frame);
+    };
+  }
+
+  document.addEventListener("astro:page-load", initToc);
+  document.addEventListener("astro:before-swap", () => cleanup?.());
+</script>
+
+<style is:global>
+  .toc-side nav ol {
+    list-style: none;
+    margin: 0;
+    padding-inline-start: 1rem;
+  }
+  .toc-side nav ol ol {
+    opacity: 0.8;
+  }
+  .toc-side nav li {
+    margin-block: 0.375rem;
+  }
+  .toc-side nav a {
+    position: relative;
+    display: inline-block;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    overflow-wrap: anywhere;
+    transition: color 0.2s ease;
+  }
+  .toc-side nav a::before {
+    content: "#";
+    position: absolute;
+    inset-inline-start: -0.75rem;
+    opacity: 0.6;
+  }
+  [data-toc-nav] a:hover,
+  [data-toc-nav] a[aria-current="true"] {
+    color: rgb(var(--color-accent));
+  }
+  [data-toc-nav] a[aria-current="true"] {
+    text-decoration: underline dashed;
+    text-underline-offset: 4px;
+  }
+  .toc-label {
+    flex-shrink: 0;
+    padding-block-end: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+  .toc-side nav {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .toc-side nav > ol {
+    position: relative;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .toc-side {
+    display: none;
+  }
+  .toc-side > nav {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100dvh - 4rem);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  @media (min-width: 80rem) {
+    .toc-side {
+      display: block;
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 100%;
+      --toc-space: calc((100vw - 100%) / 2);
+      --toc-gap: clamp(0.75rem, calc(var(--toc-space) - 14.5rem), 2.5rem);
+      --toc-edge: clamp(0.75rem, calc(var(--toc-space) - 15.5rem), 1.5rem);
+      margin-inline-end: var(--toc-gap);
+      width: min(
+        16rem,
+        calc(var(--toc-space) - var(--toc-gap) - var(--toc-edge))
+      );
+      container-type: inline-size;
+    }
+    @container (width < 7.5rem) {
+      .toc-side > nav {
+        display: none;
+      }
+    }
+  }
+
+  @media print {
+    .toc-side {
+      display: none !important;
+    }
+  }
+</style>
